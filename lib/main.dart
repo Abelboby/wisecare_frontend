@@ -4,8 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:device_frame/device_frame.dart';
 
-import 'provider/provider_register.dart';
+import 'enums/app_enums.dart';
 import 'navigation/app_navigator.dart';
+import 'provider/provider_register.dart';
 import 'utils/theme/app_theme.dart';
 import 'utils/theme/theme_manager.dart';
 
@@ -14,7 +15,7 @@ void main() async {
   try {
     await Hive.initFlutter();
   } catch (_) {}
-  await Skin.loadSavedTheme();
+  await Skin.retrieveTheme();
   runApp(const WiseCareApp());
 }
 
@@ -25,14 +26,14 @@ class WiseCareApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: ProviderRegister.getProviders(),
-      child: ValueListenableBuilder<dynamic>(
-        valueListenable: Skin.themeModeNotifier,
-        builder: (_, __, ___) {
-          final theme = AppTheme.currentTheme;
+      child: ValueListenableBuilder<AppThemeMode>(
+        valueListenable: Skin.themeMode,
+        builder: (_, mode, __) {
           final app = MaterialApp.router(
+            key: Key(mode.name),
             title: 'WiseCare',
             debugShowCheckedModeBanner: false,
-            theme: theme,
+            theme: AppTheme.commonThemeData,
             routerConfig: AppNavigator.router,
           );
           return kIsWeb
