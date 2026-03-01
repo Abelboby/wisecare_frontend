@@ -4,31 +4,29 @@ import 'colors/app_color.dart';
 import 'theme_manager.dart';
 import 'typography/app_typography.dart';
 
-/// Builds ThemeData for light and dark mode using Skin colors.
+/// Builds ThemeData from Skin and Co. Use commonThemeData in MaterialApp.
 class AppTheme {
   AppTheme._();
 
-  static ThemeData get light => _buildTheme(false);
-  static ThemeData get dark => _buildTheme(true);
-
-  static ThemeData get currentTheme => _buildTheme(Skin.isDark);
-
-  static ThemeData _buildTheme(bool isDark) {
+  static ThemeData get commonThemeData {
     return ThemeData(
       useMaterial3: true,
-      brightness: isDark ? Brightness.dark : Brightness.light,
+      brightness:
+          Skin.isDarkTheme.value ? Brightness.dark : Brightness.light,
+      primaryColor: Skin.color(Co.primary),
       colorScheme: ColorScheme(
-        brightness: isDark ? Brightness.dark : Brightness.light,
-        primary: resolveColor(Co.primary, isDark),
-        onPrimary: resolveColor(Co.onPrimary, isDark),
-        secondary: resolveColor(Co.secondary, isDark),
-        onSecondary: resolveColor(Co.onSecondary, isDark),
-        error: resolveColor(Co.error, isDark),
-        onError: resolveColor(Co.onError, isDark),
-        surface: resolveColor(Co.surface, isDark),
-        onSurface: resolveColor(Co.onSurface, isDark),
+        brightness:
+            Skin.isDarkTheme.value ? Brightness.dark : Brightness.light,
+        primary: Skin.color(Co.primary),
+        onPrimary: Skin.color(Co.onPrimary),
+        secondary: Skin.color(Co.secondary),
+        onSecondary: Skin.color(Co.onSecondary),
+        error: Skin.color(Co.error),
+        onError: Skin.color(Co.onError),
+        surface: Skin.color(Co.surface),
+        onSurface: Skin.color(Co.onSurface),
       ),
-      scaffoldBackgroundColor: resolveColor(Co.background, isDark),
+      scaffoldBackgroundColor: Skin.color(Co.background),
       textTheme: TextTheme(
         displayLarge: AppTypography.displayLarge,
         displayMedium: AppTypography.displayMedium,
