@@ -5,6 +5,8 @@ extension _SplashScreenFunctions on _SplashScreenState {
     final provider = context.read<SplashProvider>();
     await provider.loadInitialData();
     if (!mounted) return;
-    AppNavigator.navigate(AppRoutes.home);
+    if (provider.error == null) {
+      AppNavigator.navigate(AppRoutes.home);
+    }
   }
 }
