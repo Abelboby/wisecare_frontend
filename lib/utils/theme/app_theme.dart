@@ -5,8 +5,14 @@ import 'package:wisecare_frontend/utils/theme/theme_manager.dart';
 import 'package:wisecare_frontend/utils/theme/typography/app_typography.dart';
 
 /// Builds ThemeData from Skin and Co. Use commonThemeData in MaterialApp.
+/// Use [noScrollbarBehavior] in MaterialApp.scrollBehavior to hide scrollbars
+/// app-wide (e.g. for web) on SingleChildScrollView, ListView, GridView, etc.
 class AppTheme {
   AppTheme._();
+
+  /// Scroll behavior that hides scrollbars globally. Use with MaterialApp.scrollBehavior.
+  static ScrollBehavior get noScrollbarBehavior =>
+      ScrollBehavior().copyWith(scrollbars: false);
 
   static ThemeData get commonThemeData {
     return ThemeData(
@@ -27,6 +33,10 @@ class AppTheme {
         onSurface: Skin.color(Co.onSurface),
       ),
       scaffoldBackgroundColor: Skin.color(Co.background),
+      scrollbarTheme: ScrollbarThemeData(
+        thumbVisibility: WidgetStateProperty.resolveWith((_) => false),
+        trackVisibility: WidgetStateProperty.resolveWith((_) => false),
+      ),
       textTheme: TextTheme(
         displayLarge: AppTypography.displayLarge,
         displayMedium: AppTypography.displayMedium,

@@ -34,6 +34,7 @@ class WiseCareApp extends StatelessWidget {
             title: 'WiseCare',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.commonThemeData,
+            scrollBehavior: AppTheme.noScrollbarBehavior,
             routerConfig: AppNavigator.router,
           );
           return kIsWeb

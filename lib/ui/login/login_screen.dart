@@ -47,26 +47,21 @@ class _LoginScreenState extends State<LoginScreen> {
           valueListenable: Skin.themeMode,
           builder: (_, __, ___) => Consumer<LoginProvider>(
             builder: (context, provider, _) {
-              return ScrollConfiguration(
-                behavior: ScrollConfiguration.of(context).copyWith(
-                  scrollbars: false,
-                ),
-                child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: viewHeight),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const _LoginHeader(),
-                        const SizedBox(height: _LoginDimens.cardOverlap),
-                        _LoginCard(
-                          emailController: _emailController,
-                          passwordController: _passwordController,
-                          onSignIn: () => _handleSignIn(context),
-                        ),
-                        const SizedBox(height: _LoginDimens.cardOverlap),
-                      ],
-                    ),
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: viewHeight),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const _LoginHeader(),
+                      const SizedBox(height: _LoginDimens.cardOverlap),
+                      _LoginCard(
+                        emailController: _emailController,
+                        passwordController: _passwordController,
+                        onSignIn: () => _handleSignIn(context),
+                      ),
+                      const SizedBox(height: _LoginDimens.cardOverlap),
+                    ],
                   ),
                 ),
               );
