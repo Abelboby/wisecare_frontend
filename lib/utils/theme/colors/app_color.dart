@@ -100,4 +100,53 @@ class Co {
     dark: Color(0xFF60A5FA),
     grayscale: Color(0xFF90A4AE),
   );
+
+  /// Login / auth: warm body background.
+  static const AppColor warmBackground = AppColor(
+    light: Color(0xFFF8F6F5),
+    dark: Color(0xFF1C1B1F),
+    grayscale: Color(0xFFFAFAFA),
+  );
+
+  /// Login header (navy).
+  static const AppColor loginHeader = AppColor(
+    light: Color(0xFF0E1C36),
+    dark: Color(0xFF0E1C36),
+    grayscale: Color(0xFF37474F),
+  );
+
+  /// Subtitle text on login header.
+  static const AppColor headerSubtitle = AppColor(
+    light: Color(0xFFDBEAFE),
+    dark: Color(0xFFDBEAFE),
+    grayscale: Color(0xFF90A4AE),
+  );
+
+  /// Card surface (e.g. login card).
+  static const AppColor cardSurface = AppColor(
+    light: Color(0xFFFFFFFF),
+    dark: Color(0xFF2D2D2D),
+    grayscale: Color(0xFFFAFAFA),
+  );
+
+  /// Muted / secondary text.
+  static const AppColor textMuted = AppColor(
+    light: Color(0xFF63504B),
+    dark: Color(0xFFB0A8A4),
+    grayscale: Color(0xFF757575),
+  );
+
+  /// Outline / border.
+  static const AppColor outline = AppColor(
+    light: Color(0xFFE5E7EB),
+    dark: Color(0xFF49454F),
+    grayscale: Color(0xFFE0E0E0),
+  );
+
+  /// App icon shield / logo container (matches icon’s dark blue shield).
+  static const AppColor iconShield = AppColor(
+    light: Color(0xFF354670),
+    dark: Color(0xFF354670),
+    grayscale: Color(0xFF4A5568),
+  );
 }
