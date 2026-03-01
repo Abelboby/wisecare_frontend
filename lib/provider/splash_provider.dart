@@ -12,15 +12,28 @@ class SplashProvider extends ChangeNotifier {
   bool _isInitialized = false;
   bool get isInitialized => _isInitialized;
 
+  double _progress = 0.0;
+  double get progress => _progress;
+
   String? _error;
   String? get error => _error;
+
+  void updateProgress(double value) {
+    final clamped = value.clamp(0.0, 1.0);
+    if (_progress != clamped) {
+      _progress = clamped;
+      notifyListeners();
+    }
+  }
 
   Future<void> loadInitialData() async {
     if (_isInitialized) return;
     try {
-      await _repository.initialize();
+      updateProgress(0.0);
+      await _repository.initialize(onProgress: updateProgress);
       _isInitialized = true;
       _error = null;
+      updateProgress(1.0);
     } catch (e) {
       _error = e.toString();
     }
