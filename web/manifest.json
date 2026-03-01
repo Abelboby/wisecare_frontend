@@ -1,6 +1,6 @@
 {
-    "name": "wisecare_frontend",
-    "short_name": "wisecare_frontend",
+    "name": "WiseCare",
+    "short_name": "WiseCare",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
