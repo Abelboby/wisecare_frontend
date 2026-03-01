@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:wisecare_frontend/services/auth_storage_service.dart';
+
 
 /// Dio interceptor that attaches JWT and handles 401 (e.g. refresh).
 class JwtInterceptor extends Interceptor {
@@ -39,8 +41,7 @@ class JwtInterceptor extends Interceptor {
   }
 }
 
-/// Reads token from a storage abstraction. For now use a simple getter.
+/// Reads token from Hive (settingsBox). Box must be opened first (e.g. in SplashService).
 String? getStoredAuthToken() {
-  // In a real app, read from SharedPreferences or Hive using StorageKeys.authToken.
-  return null;
+  return AuthStorageService.getStoredAuthToken();
 }
