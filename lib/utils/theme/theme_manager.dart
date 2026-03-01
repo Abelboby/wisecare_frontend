@@ -1,51 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../storage_keys.dart';
 import 'colors/app_color.dart';
 import 'package:wisecare_frontend/enums/app_enums.dart';
 
-/// Theme state via ValueNotifier. Persists mode using StorageKeys.themeMode.
-/// Not a Provider — use ValueListenableBuilder or listen to themeModeNotifier.
+/// Theme state via ValueNotifier. Persists mode in Hive (StorageKeys.themeBox).
+/// Not a Provider — use ValueListenableBuilder or listen to themeMode.
 class Skin {
   Skin._();
 
-  static final ValueNotifier<AppThemeMode> themeModeNotifier =
+  static final ValueNotifier<AppThemeMode> themeMode =
       ValueNotifier<AppThemeMode>(AppThemeMode.light);
 
-  static bool get isDark {
-    switch (themeModeNotifier.value) {
+  static final ValueNotifier<bool> isDarkTheme = ValueNotifier<bool>(false);
+
+  /// Returns the current color from [color] based on [themeMode].
+  static Color color(AppColor color) {
+    switch (themeMode.value) {
       case AppThemeMode.dark:
-        return true;
-      case AppThemeMode.light:
-        return false;
+        return color.dark;
       case AppThemeMode.system:
-        return WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-            Brightness.dark;
+        return color.grayscale;
+      case AppThemeMode.light:
+        return color.light;
     }
   }
 
-  /// Resolves Co to Color for the current theme.
-  static Color color(Co co) => resolveColor(co, isDark);
+  /// Returns [dark] when theme is dark, otherwise [light]. Grayscale treated as light.
+  static Color colorSeparate(Color light, Color dark) {
+    return themeMode.value == AppThemeMode.dark ? dark : light;
+  }
 
-  static Future<void> loadSavedTheme() async {
+  /// Loads saved theme from Hive into themeMode and isDarkTheme.
+  static Future<void> retrieveTheme() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final index = prefs.getInt(StorageKeys.themeMode);
-      if (index != null && index >= 0 && index < AppThemeMode.values.length) {
-        themeModeNotifier.value = AppThemeMode.values[index];
+      final box = await Hive.openBox<int>(StorageKeys.themeBox);
+      final index = box.get(StorageKeys.themeMode);
+      if (index != null &&
+          index >= 0 &&
+          index < AppThemeMode.values.length) {
+        themeMode.value = AppThemeMode.values[index];
+        isDarkTheme.value = themeMode.value == AppThemeMode.dark;
       }
     } catch (_) {
-      // Keep default light
+      themeMode.value = AppThemeMode.light;
+      isDarkTheme.value = false;
     }
   }
 
-  static Future<void> setThemeMode(AppThemeMode mode) async {
-    themeModeNotifier.value = mode;
+  /// Updates theme mode, persists to Hive, and syncs isDarkTheme.
+  static Future<void> changeTheme({required AppThemeMode mode}) async {
+    themeMode.value = mode;
+    isDarkTheme.value = mode == AppThemeMode.dark;
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt(
-          StorageKeys.themeMode, AppThemeMode.values.indexOf(mode));
+      final box = await Hive.openBox<int>(StorageKeys.themeBox);
+      await box.put(
+        StorageKeys.themeMode,
+        AppThemeMode.values.indexOf(mode),
+      );
     } catch (_) {}
   }
 }
