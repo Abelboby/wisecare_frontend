@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:device_frame/device_frame.dart';
 
 import 'provider/provider_register.dart';
 import 'navigation/app_navigator.dart';
@@ -27,12 +29,23 @@ class WiseCareApp extends StatelessWidget {
         valueListenable: Skin.themeModeNotifier,
         builder: (_, __, ___) {
           final theme = AppTheme.currentTheme;
-          return MaterialApp.router(
+          final app = MaterialApp.router(
             title: 'WiseCare',
             debugShowCheckedModeBanner: false,
             theme: theme,
             routerConfig: AppNavigator.router,
           );
+          return kIsWeb
+              ? Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: DeviceFrame(
+                    device: Devices.ios.iPhone15Pro,
+                    screen: app,
+                    orientation: Orientation.portrait,
+                    isFrameVisible: true,
+                  ),
+                )
+              : app;
         },
       ),
     );
