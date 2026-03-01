@@ -24,8 +24,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/app_icon.svg
   SvgGenImage get appIconSvg => const SvgGenImage('assets/icons/app_icon.svg');
 
+  /// File path: assets/icons/google_logo.svg
+  SvgGenImage get googleLogo =>
+      const SvgGenImage('assets/icons/google_logo.svg');
+
   /// List of all assets
-  List<dynamic> get values => [appIconPng, appIconSvg];
+  List<dynamic> get values => [appIconPng, appIconSvg, googleLogo];
 }
 
 class Assets {
