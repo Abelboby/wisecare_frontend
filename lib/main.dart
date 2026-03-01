@@ -19,6 +19,28 @@ void main() async {
   runApp(const WiseCareApp());
 }
 
+/// iOS-style home indicator bar overlaid at the bottom of the DeviceFrame screen.
+/// Placed on top of app content so it stays visible regardless of Scaffold background.
+class _IosHomeIndicator extends StatelessWidget {
+  const _IosHomeIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: Center(
+        child: Container(
+          width: 134,
+          height: 5,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(100),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class WiseCareApp extends StatelessWidget {
   const WiseCareApp({super.key});
 
@@ -42,7 +64,17 @@ class WiseCareApp extends StatelessWidget {
                   textDirection: TextDirection.ltr,
                   child: DeviceFrame(
                     device: Devices.ios.iPhone15Pro,
-                    screen: app,
+                    screen: Stack(
+                      children: [
+                        app,
+                        const Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: 12,
+                          child: _IosHomeIndicator(),
+                        ),
+                      ],
+                    ),
                     orientation: Orientation.portrait,
                     isFrameVisible: true,
                   ),
