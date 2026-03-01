@@ -2,14 +2,21 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../utils/storage_keys.dart';
 
+/// Progress callback: 0.0 to 1.0.
+typedef SplashProgressCallback = void Function(double progress);
+
 /// Splash initialization: Hive, prefs, etc.
 class SplashService {
-  Future<void> initialize() async {
+  Future<void> initialize({SplashProgressCallback? onProgress}) async {
     try {
+      onProgress?.call(0.0);
       await Hive.initFlutter();
+      onProgress?.call(0.5);
       await Hive.openBox<dynamic>(StorageKeys.settingsBox);
+      onProgress?.call(1.0);
     } catch (_) {
       // Continue; boxes may already be open
+      onProgress?.call(1.0);
     }
   }
 }
