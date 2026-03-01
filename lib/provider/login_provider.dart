@@ -16,7 +16,7 @@ class LoginProvider extends ChangeNotifier {
   set email(String value) {
     if (_email != value) {
       _email = value;
-      notifyListeners();
+      // Do not notifyListeners() — avoids rebuilding inputs on web and keeps focus.
     }
   }
 
@@ -25,7 +25,7 @@ class LoginProvider extends ChangeNotifier {
   set password(String value) {
     if (_password != value) {
       _password = value;
-      notifyListeners();
+      // Do not notifyListeners() — avoids rebuilding inputs on web and keeps focus.
     }
   }
 
