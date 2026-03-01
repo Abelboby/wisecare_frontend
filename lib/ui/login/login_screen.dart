@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:wisecare_frontend/enums/app_enums.dart';
 import 'package:wisecare_frontend/gen/assets.gen.dart';
 import 'package:wisecare_frontend/provider/login_provider.dart';
+import 'package:wisecare_frontend/utils/theme/colors/app_color.dart';
+import 'package:wisecare_frontend/utils/theme/theme_manager.dart';
 import 'package:wisecare_frontend/widgets/common/svg_image.dart';
 
 part 'login_functions.dart';
@@ -30,33 +33,40 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.of(context).padding;
+    final viewHeight = MediaQuery.of(context).size.height - padding.bottom;
     return Scaffold(
-      backgroundColor: _LoginColors.bodyBackground,
-      body: SafeArea(
-        child: Consumer<LoginProvider>(
-          builder: (context, provider, _) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom,
+      backgroundColor: Skin.color(Co.warmBackground),
+      body: Padding(
+        padding: EdgeInsets.only(
+          left: padding.left,
+          right: padding.right,
+          bottom: padding.bottom,
+        ),
+        child: ValueListenableBuilder<AppThemeMode>(
+          valueListenable: Skin.themeMode,
+          builder: (_, __, ___) => Consumer<LoginProvider>(
+            builder: (context, provider, _) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: viewHeight),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const _LoginHeader(),
+                      const SizedBox(height: _LoginDimens.cardOverlap),
+                      _LoginCard(
+                        emailController: _emailController,
+                        passwordController: _passwordController,
+                        onSignIn: () => _handleSignIn(context),
+                      ),
+                      const SizedBox(height: _LoginDimens.cardOverlap),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const _LoginHeader(),
-                    const SizedBox(height: _LoginDimens.cardOverlap),
-                    _LoginCard(
-                      emailController: _emailController,
-                      passwordController: _passwordController,
-                      onSignIn: () => _handleSignIn(context),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -68,11 +78,15 @@ class _LoginHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topInset = MediaQuery.of(context).padding.top;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 64, bottom: 48),
-      decoration: const BoxDecoration(
-        color: _LoginColors.headerBackground,
+      padding: EdgeInsets.only(
+        top: topInset + 32,
+        bottom: 48,
+      ),
+      decoration: BoxDecoration(
+        color: Skin.color(Co.loginHeader),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(_LoginDimens.headerBottomRadius),
           bottomRight: Radius.circular(_LoginDimens.headerBottomRadius),
@@ -102,11 +116,11 @@ class _LoginLogo extends StatelessWidget {
           width: _LoginDimens.logoSize,
           height: _LoginDimens.logoSize,
           decoration: BoxDecoration(
-            color: _LoginColors.logoBg,
+            color: Skin.color(Co.iconShield),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: _LoginColors.logoShadow,
+                color: Skin.color(Co.iconShield).withValues(alpha: 0.5),
                 blurRadius: 0,
                 spreadRadius: 4,
               ),
@@ -117,7 +131,6 @@ class _LoginLogo extends StatelessWidget {
           Assets.icons.appIconSvg.path,
           width: 40,
           height: 50,
-          color: _LoginColors.primaryOrange,
         ),
       ],
     );
@@ -145,8 +158,8 @@ class _LoginWelcomeText extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           'Your health companion',
-          style: const TextStyle(
-            color: _LoginColors.headerSubtitle,
+          style: TextStyle(
+            color: Skin.color(Co.headerSubtitle),
             fontSize: 18,
             fontWeight: FontWeight.w400,
             height: 28 / 18,
@@ -175,7 +188,7 @@ class _LoginCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(_LoginDimens.cardPadding),
       decoration: BoxDecoration(
-        color: _LoginColors.cardBackground,
+        color: Skin.color(Co.cardSurface),
         borderRadius: BorderRadius.circular(_LoginDimens.cardRadius),
         boxShadow: const [
           BoxShadow(
@@ -196,17 +209,17 @@ class _LoginCard extends StatelessWidget {
         children: [
           const _LoginGreeting(),
           const SizedBox(height: _LoginDimens.cardGap),
-          const _LoginGoogleButton(),
-          const SizedBox(height: _LoginDimens.cardGap),
-          const _LoginDivider(),
-          const SizedBox(height: _LoginDimens.cardGap),
           _LoginEmailField(emailController: emailController),
           const SizedBox(height: _LoginDimens.cardGap),
           _LoginPasswordField(passwordController: passwordController),
           const SizedBox(height: _LoginDimens.cardGap),
           _LoginSignInButton(onSignIn: onSignIn),
           const SizedBox(height: _LoginDimens.cardGap),
-          const _LoginHelpLink(),
+          const _LoginDivider(),
+          const SizedBox(height: _LoginDimens.cardGap),
+          const _LoginGoogleButton(),
+          const SizedBox(height: _LoginDimens.cardGap),
+          const _LoginSignUpLink(),
         ],
       ),
     );
@@ -221,21 +234,21 @@ class _LoginGreeting extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          'नमस्ते 👋',
-          style: const TextStyle(
-            color: _LoginColors.textDark,
-            fontSize: 36,
-            fontWeight: FontWeight.w700,
-            height: 45 / 36,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 8),
+        // Text(
+        //   'नमस्ते 👋',
+        //   style: TextStyle(
+        //     color: Skin.color(Co.onBackground),
+        //     fontSize: 36,
+        //     fontWeight: FontWeight.w700,
+        //     height: 45 / 36,
+        //   ),
+        //   textAlign: TextAlign.center,
+        // ),
+        // const SizedBox(height: 8),
         Text(
           'Please sign in to continue',
-          style: const TextStyle(
-            color: _LoginColors.textMuted,
+          style: TextStyle(
+            color: Skin.color(Co.textMuted),
             fontSize: 18,
             fontWeight: FontWeight.w400,
             height: 28 / 18,
@@ -255,27 +268,24 @@ class _LoginGoogleButton extends StatelessWidget {
     return Container(
       height: 64,
       decoration: BoxDecoration(
-        color: _LoginColors.cardBackground,
-        border: Border.all(color: _LoginColors.border, width: 2),
+        color: Skin.color(Co.cardSurface),
+        border: Border.all(color: Skin.color(Co.outline), width: 2),
         borderRadius: BorderRadius.circular(_LoginDimens.buttonRadius),
       ),
       alignment: Alignment.center,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SvgImage(
+            Assets.icons.googleLogo.path,
             width: 32,
             height: 32,
-            decoration: BoxDecoration(
-              color: _LoginColors.textMuted,
-              borderRadius: BorderRadius.circular(4),
-            ),
           ),
           const SizedBox(width: 12),
           Text(
             'Sign in with Google',
-            style: const TextStyle(
-              color: _LoginColors.textDark,
+            style: TextStyle(
+              color: Skin.color(Co.onBackground),
               fontSize: 18,
               fontWeight: FontWeight.w700,
               height: 28 / 18,
@@ -297,15 +307,15 @@ class _LoginDivider extends StatelessWidget {
         Expanded(
           child: Container(
             height: 1,
-            color: _LoginColors.border,
+            color: Skin.color(Co.outline),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             'OR',
-            style: const TextStyle(
-              color: _LoginColors.textMuted,
+            style: TextStyle(
+              color: Skin.color(Co.textMuted),
               fontSize: 16,
               fontWeight: FontWeight.w400,
               height: 24 / 16,
@@ -315,7 +325,7 @@ class _LoginDivider extends StatelessWidget {
         Expanded(
           child: Container(
             height: 1,
-            color: _LoginColors.border,
+            color: Skin.color(Co.outline),
           ),
         ),
       ],
@@ -335,10 +345,10 @@ class _LoginEmailField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text(
+        Text(
           'Email',
           style: TextStyle(
-            color: _LoginColors.textDark,
+            color: Skin.color(Co.onBackground),
             fontSize: 18,
             fontWeight: FontWeight.w500,
             height: 28 / 18,
@@ -347,9 +357,9 @@ class _LoginEmailField extends StatelessWidget {
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: _LoginColors.cardBackground,
+            color: Skin.color(Co.cardSurface),
             borderRadius: BorderRadius.circular(_LoginDimens.inputRadius),
-            border: Border.all(color: _LoginColors.border),
+            border: Border.all(color: Skin.color(Co.outline)),
             boxShadow: const [
               BoxShadow(
                 color: Color(0x05000000),
@@ -391,10 +401,10 @@ class _LoginPasswordField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text(
+        Text(
           'Password',
           style: TextStyle(
-            color: _LoginColors.textDark,
+            color: Skin.color(Co.onBackground),
             fontSize: 18,
             fontWeight: FontWeight.w500,
             height: 28 / 18,
@@ -403,9 +413,9 @@ class _LoginPasswordField extends StatelessWidget {
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: _LoginColors.cardBackground,
+            color: Skin.color(Co.cardSurface),
             borderRadius: BorderRadius.circular(_LoginDimens.inputRadius),
-            border: Border.all(color: _LoginColors.border),
+            border: Border.all(color: Skin.color(Co.outline)),
             boxShadow: const [
               BoxShadow(
                 color: Color(0x05000000),
@@ -464,9 +474,8 @@ class _LoginSignInButton extends StatelessWidget {
             Container(
               height: 64,
               decoration: BoxDecoration(
-                color: _LoginColors.primaryOrange,
-                borderRadius:
-                    BorderRadius.circular(_LoginDimens.buttonRadius),
+                color: Skin.color(Co.primary),
+                borderRadius: BorderRadius.circular(_LoginDimens.buttonRadius),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x4DFF6933),
@@ -485,8 +494,7 @@ class _LoginSignInButton extends StatelessWidget {
               color: Colors.transparent,
               child: InkWell(
                 onTap: provider.isLoading ? null : onSignIn,
-                borderRadius:
-                    BorderRadius.circular(_LoginDimens.buttonRadius),
+                borderRadius: BorderRadius.circular(_LoginDimens.buttonRadius),
                 child: Container(
                   height: 64,
                   alignment: Alignment.center,
@@ -519,17 +527,19 @@ class _LoginSignInButton extends StatelessWidget {
   }
 }
 
-class _LoginHelpLink extends StatelessWidget {
-  const _LoginHelpLink();
+class _LoginSignUpLink extends StatelessWidget {
+  const _LoginSignUpLink();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
-      child: const Text(
-        'Need help signing in?',
+      onTap: () {
+        // todo: Navigate to sign up screen when implemented.
+      },
+      child: Text(
+        'Sign up',
         style: TextStyle(
-          color: _LoginColors.primaryOrange,
+          color: Skin.color(Co.primary),
           fontSize: 18,
           fontWeight: FontWeight.w600,
           height: 28 / 18,
