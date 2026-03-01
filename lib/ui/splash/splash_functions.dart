@@ -5,8 +5,13 @@ extension _SplashScreenFunctions on _SplashScreenState {
     final provider = context.read<SplashProvider>();
     await provider.loadInitialData();
     if (!mounted) return;
-    if (provider.error == null) {
+    if (provider.error != null) return;
+    final hasToken = await AuthStorageService.hasStoredAuthToken();
+    if (!mounted) return;
+    if (hasToken) {
       AppNavigator.navigate(AppRoutes.home);
+    } else {
+      AppNavigator.navigate(AppRoutes.login);
     }
   }
 }
