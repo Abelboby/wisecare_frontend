@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:device_frame/device_frame.dart';
 
-import 'enums/app_enums.dart';
-import 'navigation/app_navigator.dart';
-import 'provider/provider_register.dart';
-import 'utils/theme/app_theme.dart';
-import 'utils/theme/theme_manager.dart';
+import 'package:wisecare_frontend/enums/app_enums.dart';
+import 'package:wisecare_frontend/navigation/app_navigator.dart';
+import 'package:wisecare_frontend/provider/provider_register.dart';
+import 'package:wisecare_frontend/utils/theme/app_theme.dart';
+import 'package:wisecare_frontend/utils/theme/theme_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

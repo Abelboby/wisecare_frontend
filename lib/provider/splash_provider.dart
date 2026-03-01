@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../repositories/splash_repository.dart';
+import 'package:wisecare_frontend/repositories/splash_repository.dart';
 
 /// Splash screen state. Calls repository only.
 class SplashProvider extends ChangeNotifier {

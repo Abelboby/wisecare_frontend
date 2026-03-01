@@ -1,4 +1,4 @@
-import '../services/home_service.dart';
+import 'package:wisecare_frontend/services/home_service.dart';
 
 /// Home data orchestration. Only this layer talks to HomeService.
 class HomeRepository {

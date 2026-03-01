@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'colors/app_color.dart';
-import 'theme_manager.dart';
-import 'typography/app_typography.dart';
+import 'package:wisecare_frontend/utils/theme/colors/app_color.dart';
+import 'package:wisecare_frontend/utils/theme/theme_manager.dart';
+import 'package:wisecare_frontend/utils/theme/typography/app_typography.dart';
 
 /// Builds ThemeData from Skin and Co. Use commonThemeData in MaterialApp.
 class AppTheme {

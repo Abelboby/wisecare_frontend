@@ -7,6 +7,7 @@ import 'package:wisecare_frontend/gen/assets.gen.dart';
 import 'package:wisecare_frontend/navigation/app_navigator.dart';
 import 'package:wisecare_frontend/navigation/routes.dart';
 import 'package:wisecare_frontend/provider/splash_provider.dart';
+import 'package:wisecare_frontend/services/auth_storage_service.dart';
 import 'package:wisecare_frontend/utils/theme/colors/app_color.dart';
 import 'package:wisecare_frontend/utils/theme/theme_manager.dart';
 

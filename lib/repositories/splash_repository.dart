@@ -1,4 +1,4 @@
-import '../services/splash_service.dart';
+import 'package:wisecare_frontend/services/splash_service.dart';
 
 /// Progress callback: 0.0 to 1.0.
 typedef SplashProgressCallback = void Function(double progress);

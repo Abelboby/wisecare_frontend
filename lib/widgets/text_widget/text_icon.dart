@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/svg_image.dart';
+import 'package:wisecare_frontend/widgets/common/svg_image.dart';
 
 /// Tappable icon button using an SVG asset. Use for toolbar/menu icons.
 class TextIcon extends StatelessWidget {

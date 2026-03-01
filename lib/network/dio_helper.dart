@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import '../utils/static_values.dart';
-import 'jwt_interceptor.dart';
+import 'package:wisecare_frontend/utils/static_values.dart';
+import 'package:wisecare_frontend/network/jwt_interceptor.dart';
 
 /// Singleton Dio instance with base URL, timeouts, and JWT interceptor.
 class DioHelper {

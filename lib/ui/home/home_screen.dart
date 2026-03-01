@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/home_provider.dart';
-import '../../enums/app_enums.dart';
+import 'package:wisecare_frontend/provider/home_provider.dart';
+import 'package:wisecare_frontend/enums/app_enums.dart';
 
 part 'home_functions.dart';
 part 'widgets/home_bottom_nav.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../storage_keys.dart';
-import 'colors/app_color.dart';
+import 'package:wisecare_frontend/utils/storage_keys.dart';
+import 'package:wisecare_frontend/utils/theme/colors/app_color.dart';
 import 'package:wisecare_frontend/enums/app_enums.dart';
 
 /// Theme state via ValueNotifier. Persists mode in Hive (StorageKeys.themeBox).

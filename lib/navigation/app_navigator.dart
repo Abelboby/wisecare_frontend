@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'app_route_model.dart';
-import 'routes.dart';
+import 'package:wisecare_frontend/navigation/app_route_model.dart';
+import 'package:wisecare_frontend/navigation/routes.dart';
 
 /// GoRouter wrapper. Use navigate(route) and goBack().
 class AppNavigator {

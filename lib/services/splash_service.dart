@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../utils/storage_keys.dart';
+import 'package:wisecare_frontend/utils/storage_keys.dart';
 
 /// Progress callback: 0.0 to 1.0.
 typedef SplashProgressCallback = void Function(double progress);

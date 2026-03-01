@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import '../repositories/home_repository.dart';
-import '../enums/app_enums.dart';
+import 'package:wisecare_frontend/repositories/home_repository.dart';
+import 'package:wisecare_frontend/enums/app_enums.dart';
 
 /// Home screen state. currentTab and switchTab. Uses repository only.
 class HomeProvider extends ChangeNotifier {
