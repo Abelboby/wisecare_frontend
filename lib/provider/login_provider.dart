@@ -5,9 +5,9 @@ import 'package:wisecare_frontend/navigation/routes.dart';
 import 'package:wisecare_frontend/repositories/login_repository.dart';
 
 /// Login screen state. Calls repository only.
+/// Routes by [onboardingStep]: COMPLETE → home; otherwise → home until onboarding flow exists.
 class LoginProvider extends ChangeNotifier {
-  LoginProvider({LoginRepository? repository})
-      : _repository = repository ?? LoginRepository();
+  LoginProvider({LoginRepository? repository}) : _repository = repository ?? LoginRepository();
 
   final LoginRepository _repository;
 
@@ -48,11 +48,16 @@ class LoginProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      await _repository.signIn(_email, _password);
+      final model = await _repository.signIn(_email, _password);
       _errorMessage = null;
       _isLoading = false;
       notifyListeners();
-      AppNavigator.navigate(AppRoutes.home);
+      final step = model.onboardingStep;
+      if (step == 'COMPLETE') {
+        AppNavigator.navigate(AppRoutes.home);
+      } else {
+        AppNavigator.navigate(AppRoutes.home);
+      }
     } catch (e) {
       _errorMessage = e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString();
       _isLoading = false;
