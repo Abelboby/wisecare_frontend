@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:wisecare_frontend/navigation/app_route_model.dart';
+import 'package:wisecare_frontend/ui/chat/chat_with_arya_screen.dart';
 import 'package:wisecare_frontend/ui/home/home_screen.dart';
 import 'package:wisecare_frontend/ui/login/login_screen.dart';
 import 'package:wisecare_frontend/ui/splash/splash_screen.dart';
@@ -31,7 +32,14 @@ abstract class AppRoutes {
         const LoginScreen(),
   );
 
-  static List<AppRoute> get all => [splash, home, login];
+  static final AppRoute chatWithArya = AppRoute(
+    path: '/chat-with-arya',
+    name: 'ChatWithArya',
+    builder: (BuildContext context, GoRouterState state) =>
+        const ChatWithAryaScreen(),
+  );
+
+  static List<AppRoute> get all => [splash, home, login, chatWithArya];
 
   static List<AppRoute> get testableRoutes => [home, login];
 }
