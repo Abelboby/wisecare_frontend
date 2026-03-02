@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'package:wisecare_frontend/navigation/routes.dart';
 import 'package:wisecare_frontend/provider/home_provider.dart';
 import 'package:wisecare_frontend/provider/profile_provider.dart';
 import 'package:wisecare_frontend/enums/app_enums.dart';
@@ -389,7 +391,7 @@ class _QuickActionsGrid extends StatelessWidget {
                         icon: Icons.chat_bubble_outline,
                         label: 'Chat with Arya',
                         textColor: _HomeColors.chatText,
-                        onTap: () {},
+                        onTap: () => context.push(AppRoutes.chatWithArya.path),
                       ),
                     ),
                   ],
