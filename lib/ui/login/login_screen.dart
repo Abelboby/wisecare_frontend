@@ -23,11 +23,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -53,14 +57,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const _LoginHeader(),
+                      GestureDetector(
+                        onTap: () => FocusScope.of(context).unfocus(),
+                        behavior: HitTestBehavior.opaque,
+                        child: const _LoginHeader(),
+                      ),
                       const SizedBox(height: _LoginDimens.cardOverlap),
                       _LoginCard(
                         emailController: _emailController,
                         passwordController: _passwordController,
+                        emailFocusNode: _emailFocusNode,
+                        passwordFocusNode: _passwordFocusNode,
                         onSignIn: () => _handleSignIn(context),
                       ),
-                      const SizedBox(height: _LoginDimens.cardOverlap),
+                      GestureDetector(
+                        onTap: () => FocusScope.of(context).unfocus(),
+                        behavior: HitTestBehavior.opaque,
+                        child: const SizedBox(height: _LoginDimens.cardOverlap),
+                      ),
                     ],
                   ),
                 ),
@@ -175,11 +189,15 @@ class _LoginCard extends StatelessWidget {
   const _LoginCard({
     required this.emailController,
     required this.passwordController,
+    required this.emailFocusNode,
+    required this.passwordFocusNode,
     required this.onSignIn,
   });
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final FocusNode emailFocusNode;
+  final FocusNode passwordFocusNode;
   final VoidCallback onSignIn;
 
   @override
@@ -209,9 +227,15 @@ class _LoginCard extends StatelessWidget {
         children: [
           const _LoginGreeting(),
           const SizedBox(height: _LoginDimens.cardGap),
-          _LoginEmailField(emailController: emailController),
+          _LoginEmailField(
+            emailController: emailController,
+            focusNode: emailFocusNode,
+          ),
           const SizedBox(height: _LoginDimens.cardGap),
-          _LoginPasswordField(passwordController: passwordController),
+          _LoginPasswordField(
+            passwordController: passwordController,
+            focusNode: passwordFocusNode,
+          ),
           const SizedBox(height: _LoginDimens.cardGap),
           _LoginSignInButton(onSignIn: onSignIn),
           const SizedBox(height: _LoginDimens.cardGap),
@@ -334,9 +358,13 @@ class _LoginDivider extends StatelessWidget {
 }
 
 class _LoginEmailField extends StatelessWidget {
-  const _LoginEmailField({required this.emailController});
+  const _LoginEmailField({
+    required this.emailController,
+    required this.focusNode,
+  });
 
   final TextEditingController emailController;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -355,32 +383,29 @@ class _LoginEmailField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: Skin.color(Co.cardSurface),
-            borderRadius: BorderRadius.circular(_LoginDimens.inputRadius),
-            border: Border.all(color: Skin.color(Co.outline)),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x05000000),
-                blurRadius: 2,
-                offset: Offset(0, 1),
-              ),
-            ],
-          ),
-          child: TextFormField(
-            controller: emailController,
-            keyboardType: TextInputType.emailAddress,
-            autocorrect: false,
-            autofillHints: const [AutofillHints.email],
-            onChanged: (value) => provider.email = value,
-            decoration: InputDecoration(
-              hintText: 'Enter your email',
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 18,
-              ),
+        TextFormField(
+          key: const ValueKey<String>('login_email'),
+          controller: emailController,
+          focusNode: focusNode,
+          keyboardType: TextInputType.emailAddress,
+          autocorrect: false,
+          autofillHints: const [AutofillHints.email],
+          onChanged: (value) => provider.email = value,
+          decoration: InputDecoration(
+            hintText: 'Enter your email',
+            filled: true,
+            fillColor: Skin.color(Co.cardSurface),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(_LoginDimens.inputRadius),
+              borderSide: BorderSide(color: Skin.color(Co.outline)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(_LoginDimens.inputRadius),
+              borderSide: BorderSide(color: Skin.color(Co.outline)),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 18,
             ),
           ),
         ),
@@ -390,9 +415,13 @@ class _LoginEmailField extends StatelessWidget {
 }
 
 class _LoginPasswordField extends StatelessWidget {
-  const _LoginPasswordField({required this.passwordController});
+  const _LoginPasswordField({
+    required this.passwordController,
+    required this.focusNode,
+  });
 
   final TextEditingController passwordController;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -411,32 +440,29 @@ class _LoginPasswordField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: Skin.color(Co.cardSurface),
-            borderRadius: BorderRadius.circular(_LoginDimens.inputRadius),
-            border: Border.all(color: Skin.color(Co.outline)),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x05000000),
-                blurRadius: 2,
-                offset: Offset(0, 1),
-              ),
-            ],
-          ),
-          child: TextFormField(
-            controller: passwordController,
-            obscureText: true,
-            autocorrect: false,
-            autofillHints: const [AutofillHints.password],
-            onChanged: (value) => provider.password = value,
-            decoration: InputDecoration(
-              hintText: 'Enter your password',
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 18,
-              ),
+        TextFormField(
+          key: const ValueKey<String>('login_password'),
+          controller: passwordController,
+          focusNode: focusNode,
+          obscureText: true,
+          autocorrect: false,
+          autofillHints: const [AutofillHints.password],
+          onChanged: (value) => provider.password = value,
+          decoration: InputDecoration(
+            hintText: 'Enter your password',
+            filled: true,
+            fillColor: Skin.color(Co.cardSurface),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(_LoginDimens.inputRadius),
+              borderSide: BorderSide(color: Skin.color(Co.outline)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(_LoginDimens.inputRadius),
+              borderSide: BorderSide(color: Skin.color(Co.outline)),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 18,
             ),
           ),
         ),
