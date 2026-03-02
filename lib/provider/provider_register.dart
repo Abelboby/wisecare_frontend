@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import 'package:wisecare_frontend/provider/chat_provider.dart';
 import 'package:wisecare_frontend/provider/home_provider.dart';
 import 'package:wisecare_frontend/provider/login_provider.dart';
 import 'package:wisecare_frontend/provider/profile_provider.dart';
@@ -20,6 +21,9 @@ class ProviderRegister {
       ),
       ChangeNotifierProvider<HomeProvider>(
         create: (_) => HomeProvider(),
+      ),
+      ChangeNotifierProvider<ChatProvider>(
+        create: (_) => ChatProvider(),
       ),
       ChangeNotifierProvider<LoginProvider>(
         create: (_) => LoginProvider(),
