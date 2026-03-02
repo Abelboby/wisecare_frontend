@@ -3,7 +3,7 @@ class StaticValues {
   StaticValues._();
 
   static const String appName = 'WiseCare';
-  static const String apiBaseUrl = 'https://api.example.com';
+  static const String apiBaseUrl = 'https://3fl3pytece.execute-api.ap-south-1.amazonaws.com/prod';
   static const int connectTimeout = 30000;
   static const int receiveTimeout = 30000;
 
