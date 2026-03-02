@@ -9,4 +9,5 @@ class Endpoints {
   static const String authSignout = '/auth/signout';
   static const String user = '/user';
   static const String userProfile = '/user/profile';
+  static const String companionChat = '/companion/chat';
 }
