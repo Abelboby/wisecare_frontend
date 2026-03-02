@@ -14,6 +14,12 @@ class JwtInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) {
+    // Auth endpoints do not require Bearer token (per API: no token for auth).
+    final path = options.path;
+    if (path.startsWith('/auth/')) {
+      handler.next(options);
+      return;
+    }
     final token = getToken?.call();
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
