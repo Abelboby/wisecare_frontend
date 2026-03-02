@@ -18,6 +18,17 @@ class AuthStorageService {
     }
   }
 
+  static String? getStoredRefreshToken() {
+    try {
+      if (!Hive.isBoxOpen(StorageKeys.settingsBox)) return null;
+      final box = Hive.box<dynamic>(StorageKeys.settingsBox);
+      final value = box.get(StorageKeys.refreshToken);
+      return value is String ? value : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   static Future<bool> hasStoredAuthToken() async {
     final token = getStoredAuthToken();
     return token != null && token.isNotEmpty;
