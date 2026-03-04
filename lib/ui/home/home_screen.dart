@@ -378,7 +378,7 @@ class _QuickActionsGrid extends StatelessWidget {
                         icon: Icons.emergency,
                         label: 'Emergency SOS',
                         textColor: _HomeColors.sosText,
-                        onTap: () {},
+                        onTap: () => context.push(AppRoutes.emergencySos.path),
                       ),
                     ),
                     const SizedBox(height: _gap),
