@@ -14,23 +14,13 @@ class DioHelper {
     _dio = Dio(
       BaseOptions(
         baseUrl: StaticValues.apiBaseUrl,
-        connectTimeout:
-            Duration(milliseconds: StaticValues.connectTimeout),
-        receiveTimeout:
-            Duration(milliseconds: StaticValues.receiveTimeout),
+        connectTimeout: Duration(milliseconds: StaticValues.connectTimeout),
+        receiveTimeout: Duration(milliseconds: StaticValues.receiveTimeout),
       ),
     );
-    _dio!.interceptors.add(
-      JwtInterceptor(
-        getToken: getStoredAuthToken,
-        onUnauthorized: _handleUnauthorized,
-      ),
-    );
+    // Pass the Dio instance into the interceptor so it can retry requests
+    // after a successful token refresh.
+    _dio!.interceptors.add(JwtInterceptor(dio: _dio!));
     return _dio!;
-  }
-
-  static Future<bool> _handleUnauthorized() async {
-    // Todo: refresh token using StorageKeys.refreshToken, then save new auth token.
-    return false;
   }
 }
