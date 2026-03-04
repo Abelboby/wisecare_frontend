@@ -6,6 +6,7 @@ import 'package:wisecare_frontend/provider/chat_provider.dart';
 import 'package:wisecare_frontend/provider/home_provider.dart';
 import 'package:wisecare_frontend/provider/login_provider.dart';
 import 'package:wisecare_frontend/provider/profile_provider.dart';
+import 'package:wisecare_frontend/provider/sos_provider.dart';
 import 'package:wisecare_frontend/provider/splash_provider.dart';
 
 /// Centralized provider registration.
@@ -24,6 +25,9 @@ class ProviderRegister {
       ),
       ChangeNotifierProvider<ChatProvider>(
         create: (_) => ChatProvider(),
+      ),
+      ChangeNotifierProvider<SosProvider>(
+        create: (_) => SosProvider(),
       ),
       ChangeNotifierProvider<LoginProvider>(
         create: (_) => LoginProvider(),
