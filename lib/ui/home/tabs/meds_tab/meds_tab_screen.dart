@@ -80,31 +80,41 @@ class _MedsTabScreenState extends State<MedsTabScreen> {
                       children: [
                         _MedsGreeting(userName: schedule.userName),
                         const SizedBox(height: _MedsDimens.sectionGap),
-                        ...schedule.doseSections.asMap().entries.map((entry) {
-                          final index = entry.key;
-                          final section = entry.value;
-                          final iconColor = index == 0
-                              ? _MedsColors.morningSunIcon
-                              : _MedsColors.afternoonSunIcon;
+                        ...schedule.doseSections.map((section) {
+                          final phase = _computePhase(section.label);
+                          final featuredIdx = _featuredMedIndex(phase, section.medications);
+                          final iconStyle = _sectionIconStyle(section.label);
+
+                          // Past sections: full opacity, all compact (taken or missed).
+                          // Current section: full opacity, first untaken is featured.
+                          // Upcoming sections: dimmed, all compact.
+                          final opacity = phase == _SectionPhase.upcoming ? 0.7 : 1.0;
+
                           return Padding(
                             padding: const EdgeInsets.only(bottom: _MedsDimens.sectionGap),
                             child: Opacity(
-                              opacity: section.isUpcoming ? 0.7 : 1,
+                              opacity: opacity,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _MedsDoseSectionHeader(
                                     label: section.label,
                                     time: section.time,
-                                    iconColor: iconColor,
+                                    icon: iconStyle.icon,
+                                    iconColor: iconStyle.color,
                                   ),
                                   const SizedBox(height: _MedsDimens.cardGap),
-                                  ...section.medications.map((med) {
-                                    if (med.cardType == MedsCardType.featured) {
+                                  ...section.medications.asMap().entries.map((e) {
+                                    final medIdx = e.key;
+                                    final med = e.value;
+                                    // Only the first untaken med in the current
+                                    // section gets the large featured card.
+                                    if (medIdx == featuredIdx) {
                                       return Padding(
                                         padding: const EdgeInsets.only(bottom: _MedsDimens.cardGap),
                                         child: _FeaturedMedicationCard(
                                           medication: med,
+                                          isMarkingTaken: medsProvider.isMarkingTaken(med.id),
                                           onMarkAsTaken: () => medsProvider.markAsTaken(med.id),
                                         ),
                                       );
