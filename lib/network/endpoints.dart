@@ -46,6 +46,17 @@ class Endpoints {
   static String serviceRequestAssign(String requestId) =>
       '/service-requests/$requestId/assign';
 
+  // ── Meds ──────────────────────────────────────────────────────────────────
+  /// GET /meds/schedule?date=YYYY-MM-DD
+  static const String medsSchedule = '/meds/schedule';
+
+  /// POST /meds/medications/:id/taken
+  static String medsTaken(String medicationId) =>
+      '/meds/medications/$medicationId/taken';
+
+  /// POST /meds/refill-requests
+  static const String medsRefillRequests = '/meds/refill-requests';
+
   // ── SOS ───────────────────────────────────────────────────────────────────
   /// POST /sos — ELDERLY only. No body.
   static const String sos = '/sos';
