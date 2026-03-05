@@ -3,10 +3,12 @@ part of '../meds_tab_screen.dart';
 class _FeaturedMedicationCard extends StatelessWidget {
   const _FeaturedMedicationCard({
     required this.medication,
+    required this.isMarkingTaken,
     required this.onMarkAsTaken,
   });
 
   final MedicationModel medication;
+  final bool isMarkingTaken;
   final VoidCallback onMarkAsTaken;
 
   @override
@@ -81,7 +83,12 @@ class _FeaturedMedicationCard extends StatelessWidget {
                   _MedsLowStockWarning(pillsRemaining: medication.pillsRemaining!),
                 ],
                 const SizedBox(height: 16),
-                _MarkAsTakenButton(onTap: onMarkAsTaken),
+                medication.isTakenToday
+                    ? const _TakenBadge()
+                    : _MarkAsTakenButton(
+                        isLoading: isMarkingTaken,
+                        onTap: onMarkAsTaken,
+                      ),
               ],
             ),
           ),
@@ -208,40 +215,93 @@ class _MedsLowStockWarning extends StatelessWidget {
   }
 }
 
-class _MarkAsTakenButton extends StatelessWidget {
-  const _MarkAsTakenButton({required this.onTap});
-
-  final VoidCallback onTap;
+/// Shown on a featured card once the dose has been confirmed as taken by backend.
+class _TakenBadge extends StatelessWidget {
+  const _TakenBadge();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 56,
       decoration: BoxDecoration(
-        border: Border.all(color: _MedsColors.markTakenBorder, width: 2),
+        color: _MedsColors.takenBadgeBg,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.check_circle_rounded,
+            color: _MedsColors.takenBadgeIcon,
+            size: 20,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            'Taken',
+            style: GoogleFonts.lexend(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              height: 28 / 18,
+              color: _MedsColors.takenBadgeText,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MarkAsTakenButton extends StatelessWidget {
+  const _MarkAsTakenButton({
+    required this.onTap,
+    required this.isLoading,
+  });
+
+  final VoidCallback onTap;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 56,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: isLoading ? _MedsColors.markTakenBorder.withValues(alpha: 0.4) : _MedsColors.markTakenBorder,
+          width: 2,
+        ),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: onTap,
+          onTap: isLoading ? null : onTap,
           borderRadius: BorderRadius.circular(24),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.check_circle_outline_rounded,
-                color: _MedsColors.markTakenIcon,
-                size: 20,
-              ),
+              if (isLoading)
+                const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(_MedsColors.markTakenIcon),
+                  ),
+                )
+              else
+                const Icon(
+                  Icons.check_circle_outline_rounded,
+                  color: _MedsColors.markTakenIcon,
+                  size: 20,
+                ),
               const SizedBox(width: 8),
               Text(
-                'Mark as Taken',
+                isLoading ? 'Marking...' : 'Mark as Taken',
                 style: GoogleFonts.lexend(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   height: 28 / 18,
-                  color: _MedsColors.markTakenText,
+                  color: isLoading ? _MedsColors.markTakenText.withValues(alpha: 0.4) : _MedsColors.markTakenText,
                 ),
               ),
             ],
