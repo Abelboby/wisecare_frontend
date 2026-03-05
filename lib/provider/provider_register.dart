@@ -5,6 +5,7 @@ import 'package:provider/single_child_widget.dart';
 import 'package:wisecare_frontend/provider/chat_provider.dart';
 import 'package:wisecare_frontend/provider/home_provider.dart';
 import 'package:wisecare_frontend/provider/login_provider.dart';
+import 'package:wisecare_frontend/provider/meds_provider.dart';
 import 'package:wisecare_frontend/provider/profile_provider.dart';
 import 'package:wisecare_frontend/provider/sos_provider.dart';
 import 'package:wisecare_frontend/provider/splash_provider.dart';
@@ -22,6 +23,9 @@ class ProviderRegister {
       ),
       ChangeNotifierProvider<HomeProvider>(
         create: (_) => HomeProvider(),
+      ),
+      ChangeNotifierProvider<MedsProvider>(
+        create: (_) => MedsProvider(),
       ),
       ChangeNotifierProvider<ChatProvider>(
         create: (_) => ChatProvider(),
