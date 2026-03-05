@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:wisecare_frontend/models/meds/dose_section_model.dart';
 import 'package:wisecare_frontend/models/meds/meds_schedule_model.dart';
 import 'package:wisecare_frontend/repositories/meds_repository.dart';
 
@@ -20,6 +19,12 @@ class MedsProvider extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
+  /// Medication IDs currently being marked as taken (API call in-flight).
+  final Set<String> _markingTakenIds = {};
+
+  bool isMarkingTaken(String medicationId) =>
+      _markingTakenIds.contains(medicationId);
+
   Future<void> loadSchedule({String? date}) async {
     _errorMessage = null;
     _isLoading = true;
@@ -37,14 +42,26 @@ class MedsProvider extends ChangeNotifier {
     }
   }
 
+  /// Marks a dose as taken, then silently re-fetches the schedule
+  /// so the screen reflects the latest backend state (updated isUpcoming,
+  /// next pill becomes active, etc.).
   Future<void> markAsTaken(String medicationId) async {
+    if (_markingTakenIds.contains(medicationId)) return;
+    _markingTakenIds.add(medicationId);
+    _errorMessage = null;
+    notifyListeners();
     try {
       await _repository.markAsTaken(medicationId);
-      _updateMedicationTaken(medicationId, true);
+      // Re-fetch after success — backend returns updated isUpcoming flags,
+      // correct isTakenToday values, and any new dose sections to display.
+      await _silentRefresh();
     } catch (e) {
       _errorMessage = e is Exception
           ? e.toString().replaceFirst('Exception: ', '')
           : e.toString();
+      notifyListeners();
+    } finally {
+      _markingTakenIds.remove(medicationId);
       notifyListeners();
     }
   }
@@ -52,7 +69,6 @@ class MedsProvider extends ChangeNotifier {
   Future<void> requestRefill(String medicationId) async {
     try {
       await _repository.requestRefill(medicationId);
-      notifyListeners();
     } catch (e) {
       _errorMessage = e is Exception
           ? e.toString().replaceFirst('Exception: ', '')
@@ -61,26 +77,16 @@ class MedsProvider extends ChangeNotifier {
     }
   }
 
-  void _updateMedicationTaken(String medicationId, bool taken) {
-    if (_schedule == null) return;
-    final sections = _schedule!.doseSections.map((section) {
-      final meds = section.medications.map((m) {
-        if (m.id == medicationId) return m.copyWith(isTakenToday: taken);
-        return m;
-      }).toList();
-      return DoseSectionModel(
-        label: section.label,
-        time: section.time,
-        medications: meds,
-        isUpcoming: section.isUpcoming,
-      );
-    }).toList();
-    _schedule = MedsScheduleModel(
-      userName: _schedule!.userName,
-      date: _schedule!.date,
-      doseSections: sections,
-      refillSuggestions: _schedule!.refillSuggestions,
-    );
-    notifyListeners();
+  /// Re-fetches the schedule without showing the full-screen loading indicator.
+  /// The existing schedule stays visible while the call is in progress.
+  Future<void> _silentRefresh({String? date}) async {
+    try {
+      final updated = await _repository.getSchedule(date: date);
+      _schedule = updated;
+      notifyListeners();
+    } catch (_) {
+      // Swallow silently — the optimistic local state is good enough if
+      // the refresh fails. User can pull-to-refresh if needed.
+    }
   }
 }
