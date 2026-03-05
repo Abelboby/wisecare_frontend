@@ -3,8 +3,7 @@ import 'package:wisecare_frontend/services/meds_service.dart';
 
 /// Meds data orchestration. Only this layer talks to MedsService.
 class MedsRepository {
-  MedsRepository({MedsService? medsService})
-      : _medsService = medsService ?? MedsService();
+  MedsRepository({MedsService? medsService}) : _medsService = medsService ?? MedsService();
 
   final MedsService _medsService;
 
