@@ -14,6 +14,8 @@ class _MedsColors {
   static const Color doseTimeText = Color(0xFF64748B);
   static const Color morningSunIcon = Color(0xFFFF6933);
   static const Color afternoonSunIcon = Color(0xFFFB923C);
+  static const Color eveningIcon = Color(0xFFEA580C);
+  static const Color nightIcon = Color(0xFF6366F1);
   static const Color cardBackground = Color(0xFFFFFFFF);
   static const Color afterBreakfastBadgeBg = Color(0xE6FFFFFF);
   static const Color afterBreakfastBadgeText = Color(0xFF1E293B);
@@ -33,6 +35,9 @@ class _MedsColors {
   static const Color aspirinImageBg = Color(0xFFF1F5F9);
   static const Color aspirinCheckBorder = Color(0xFFCBD5E1);
   static const Color aspirinCheckIcon = Color(0xFFCBD5E1);
+  static const Color takenBadgeBg = Color(0xFFDCFCE7);
+  static const Color takenBadgeText = Color(0xFF16A34A);
+  static const Color takenBadgeIcon = Color(0xFF16A34A);
   static const Color refillIconBg = Color(0xFFFFEDD5);
   static const Color refillIcon = Color(0xFFFF6933);
   static const Color refillTitleText = Color(0xFF1E293B);
