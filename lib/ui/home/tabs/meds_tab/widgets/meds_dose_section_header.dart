@@ -4,11 +4,13 @@ class _MedsDoseSectionHeader extends StatelessWidget {
   const _MedsDoseSectionHeader({
     required this.label,
     required this.time,
+    required this.icon,
     required this.iconColor,
   });
 
   final String label;
   final String time;
+  final IconData icon;
   final Color iconColor;
 
   @override
@@ -18,7 +20,7 @@ class _MedsDoseSectionHeader extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            Icons.wb_sunny_rounded,
+            icon,
             color: iconColor,
             size: _MedsDimens.doseSectionIconSize,
           ),
