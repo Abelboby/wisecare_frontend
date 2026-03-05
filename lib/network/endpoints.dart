@@ -35,24 +35,20 @@ class Endpoints {
   static const String serviceRequests = '/service-requests';
 
   /// GET /service-requests/{requestId} — single request by id.
-  static String serviceRequest(String requestId) =>
-      '/service-requests/$requestId';
+  static String serviceRequest(String requestId) => '/service-requests/$requestId';
 
   /// PATCH /service-requests/{requestId}/status
-  static String serviceRequestStatus(String requestId) =>
-      '/service-requests/$requestId/status';
+  static String serviceRequestStatus(String requestId) => '/service-requests/$requestId/status';
 
   /// PATCH /service-requests/{requestId}/assign — ADMIN only.
-  static String serviceRequestAssign(String requestId) =>
-      '/service-requests/$requestId/assign';
+  static String serviceRequestAssign(String requestId) => '/service-requests/$requestId/assign';
 
   // ── Meds ──────────────────────────────────────────────────────────────────
   /// GET /meds/schedule?date=YYYY-MM-DD
   static const String medsSchedule = '/meds/schedule';
 
   /// POST /meds/medications/:id/taken
-  static String medsTaken(String medicationId) =>
-      '/meds/medications/$medicationId/taken';
+  static String medsTaken(String medicationId) => '/meds/medications/$medicationId/taken';
 
   /// POST /meds/refill-requests
   static const String medsRefillRequests = '/meds/refill-requests';
@@ -70,7 +66,6 @@ class Endpoints {
   static const String adminUsers = '/admin/users';
   static String adminUser(String userId) => '/admin/users/$userId';
   static const String adminCreateAgent = '/admin/users/agent';
-  static String adminUserStatus(String userId) =>
-      '/admin/users/$userId/status';
+  static String adminUserStatus(String userId) => '/admin/users/$userId/status';
   static const String adminAgentsAvailable = '/admin/agents/available';
 }
