@@ -24,7 +24,6 @@ class _HomeTabDimens {
   static const double avatarSize = 48;
   static const double avatarCircleSize = 56;
   static const double statusBadgeSize = 12;
-  static const double notificationBadgeSize = 10;
   static const double micButtonSize = 40;
 }
 
@@ -67,6 +66,5 @@ class _HomeTabColors {
   static const Color bannerMicBg = Color(0x33FFFFFF);
   static const Color statusGreen = Color(0xFF22C55E);
   static const Color statusGreenBanner = Color(0xFF4ADE80);
-  static const Color notificationBadge = Color(0xFFFF6933);
   static const Color headerBorderWhite = Color(0x33FFFFFF);
 }
