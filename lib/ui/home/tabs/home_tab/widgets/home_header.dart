@@ -3,6 +3,10 @@ part of '../home_tab_screen.dart';
 class _HomeHeader extends StatelessWidget {
   const _HomeHeader();
 
+  void _openWallet(BuildContext context) {
+    context.push(AppRoutes.wallet.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     final topInset = MediaQuery.of(context).padding.top;
@@ -67,40 +71,19 @@ class _HomeHeader extends StatelessWidget {
                 ],
               ),
               GestureDetector(
-                onTap: () {},
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      width: _HomeTabDimens.avatarSize,
-                      height: _HomeTabDimens.avatarSize,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _HomeTabColors.headerBorderWhite,
-                      ),
-                      child: const Icon(
-                        Icons.notifications_outlined,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        width: _HomeTabDimens.notificationBadgeSize,
-                        height: _HomeTabDimens.notificationBadgeSize,
-                        decoration: BoxDecoration(
-                          color: _HomeTabColors.notificationBadge,
-                          border: Border.all(
-                            color: _HomeTabColors.headerNavy,
-                            width: 1,
-                          ),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                  ],
+                onTap: () => _openWallet(context),
+                child: Container(
+                  width: _HomeTabDimens.avatarSize,
+                  height: _HomeTabDimens.avatarSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _HomeTabColors.headerBorderWhite,
+                  ),
+                  child: const Icon(
+                    Icons.account_balance_wallet_outlined,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
               ),
             ],
