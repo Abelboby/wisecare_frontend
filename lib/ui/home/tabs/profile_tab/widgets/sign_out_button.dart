@@ -17,7 +17,7 @@ class _SignOutButton extends StatelessWidget {
         Container(
           height: _ProfileTabDimens.logoutButtonHeight,
           decoration: BoxDecoration(
-            color: _ProfileTabColors.logoutButton,
+            color: Skin.color(Co.primary),
             borderRadius: BorderRadius.circular(_ProfileTabDimens.logoutButtonRadius),
             boxShadow: const [
               BoxShadow(
@@ -65,7 +65,7 @@ class _SignOutButton extends StatelessWidget {
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
                         height: 32 / 24,
-                        color: _ProfileTabColors.logoutText,
+                        color: Skin.color(Co.onPrimary),
                       ),
                     ),
                   ],
