@@ -1,7 +1,13 @@
 part of '../wallet_screen.dart';
 
 class _WalletLimitsSection extends StatelessWidget {
-  const _WalletLimitsSection();
+  const _WalletLimitsSection({
+    required this.dailyLimit,
+    required this.monthlyLimit,
+  });
+
+  final WalletLimitModel dailyLimit;
+  final WalletLimitModel monthlyLimit;
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +27,18 @@ class _WalletLimitsSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: _WalletDimens.limitsGap),
-        const _SpendingLimitCard(
+        _SpendingLimitCard(
           label: 'Daily Spending',
-          spent: 150,
-          limit: 2000,
-          remaining: 1850,
+          spent: dailyLimit.spent,
+          limit: dailyLimit.limit,
+          remaining: dailyLimit.remaining,
         ),
         const SizedBox(height: _WalletDimens.limitsGap),
-        const _SpendingLimitCard(
+        _SpendingLimitCard(
           label: 'Monthly Spending',
-          spent: 3500,
-          limit: 20000,
-          remaining: 16500,
+          spent: monthlyLimit.spent,
+          limit: monthlyLimit.limit,
+          remaining: monthlyLimit.remaining,
         ),
       ],
     );
@@ -52,7 +58,7 @@ class _SpendingLimitCard extends StatelessWidget {
   final int limit;
   final int remaining;
 
-  double get _progress => spent / limit;
+  double get _progress => limit > 0 ? spent / limit : 0.0;
 
   @override
   Widget build(BuildContext context) {
