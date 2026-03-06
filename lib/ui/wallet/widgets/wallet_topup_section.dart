@@ -1,7 +1,13 @@
 part of '../wallet_screen.dart';
 
 class _WalletTopupSection extends StatelessWidget {
-  const _WalletTopupSection();
+  const _WalletTopupSection({
+    required this.isTopupLoading,
+    required this.onRequestTopup,
+  });
+
+  final bool isTopupLoading;
+  final VoidCallback onRequestTopup;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +17,7 @@ class _WalletTopupSection extends StatelessWidget {
           color: _WalletColors.topupButton,
           borderRadius: BorderRadius.circular(_WalletDimens.topupButtonRadius),
           child: InkWell(
-            onTap: () {},
+            onTap: isTopupLoading ? null : onRequestTopup,
             borderRadius: BorderRadius.circular(_WalletDimens.topupButtonRadius),
             child: Container(
               width: double.infinity,
@@ -36,14 +42,24 @@ class _WalletTopupSection extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.add_circle_outline,
-                    color: _WalletColors.topupButtonText,
-                    size: 25,
-                  ),
+                  if (isTopupLoading)
+                    const SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: CircularProgressIndicator(
+                        color: _WalletColors.topupButtonText,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  else
+                    const Icon(
+                      Icons.add_circle_outline,
+                      color: _WalletColors.topupButtonText,
+                      size: 25,
+                    ),
                   const SizedBox(width: 16),
                   Text(
-                    'Request Top-up',
+                    isTopupLoading ? 'Sending request...' : 'Request Top-up',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
