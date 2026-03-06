@@ -28,9 +28,7 @@ class JwtInterceptor extends Interceptor {
 
   static const String _tag = 'JwtInterceptor';
 
-  bool _shouldSkip(RequestOptions options) =>
-      options.extra[_kSkipAuth] == true ||
-      options.path.startsWith('/auth/');
+  bool _shouldSkip(RequestOptions options) => options.extra[_kSkipAuth] == true || options.path.startsWith('/auth/');
 
   // ── Request ───────────────────────────────────────────────────────────────
 
@@ -132,8 +130,7 @@ class JwtInterceptor extends Interceptor {
       await AuthStorageService.saveAuthTokens(newAccessToken, newRefreshToken);
 
       // Retry the original request with the new token.
-      final retryOptions = err.requestOptions
-        ..headers['Authorization'] = 'Bearer $newAccessToken';
+      final retryOptions = err.requestOptions..headers['Authorization'] = 'Bearer $newAccessToken';
       final retryResponse = await _dio.fetch<dynamic>(retryOptions);
       handler.resolve(retryResponse);
     } on DioException catch (refreshErr) {
