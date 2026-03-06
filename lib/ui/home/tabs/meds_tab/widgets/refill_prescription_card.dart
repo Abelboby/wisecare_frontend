@@ -1,16 +1,21 @@
 part of '../meds_tab_screen.dart';
 
+/// Single card that opens the refill prescription dialog when tapped.
 class _RefillPrescriptionCard extends StatelessWidget {
   const _RefillPrescriptionCard({
-    required this.suggestion,
     required this.onTap,
+    this.medicineCount,
   });
 
-  final RefillSuggestionModel suggestion;
   final VoidCallback onTap;
+  final int? medicineCount;
 
   @override
   Widget build(BuildContext context) {
+    final subtitle = medicineCount != null && medicineCount! > 0
+        ? '$medicineCount ${medicineCount == 1 ? 'medicine' : 'medicines'} to request refill'
+        : 'Select medicines to request refill';
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -48,7 +53,7 @@ class _RefillPrescriptionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Refill Prescription',
+                    'Refill prescription',
                     style: GoogleFonts.lexend(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -58,7 +63,7 @@ class _RefillPrescriptionCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Request reorder for ${suggestion.medicationName}',
+                    subtitle,
                     style: GoogleFonts.lexend(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
