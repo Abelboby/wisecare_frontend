@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:wisecare_frontend/enums/app_enums.dart';
 import 'package:wisecare_frontend/provider/home_provider.dart';
+import 'package:wisecare_frontend/provider/profile_provider.dart';
 
 part 'health_tab_functions.dart';
 part 'health_tab_variables.dart';
@@ -17,35 +18,41 @@ class HealthTabScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: _HealthTabColors.background,
-      child: Column(
-        children: [
-          const _HealthHeader(),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(
-                _HealthTabDimens.contentPaddingHorizontal,
-                _HealthTabDimens.contentPaddingTop,
-                _HealthTabDimens.contentPaddingHorizontal,
-                _HealthTabDimens.contentPaddingBottom,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const _LowRiskBanner(userName: 'Raghav'),
+    return Consumer<ProfileProvider>(
+      builder: (context, profileProvider, _) {
+        final userName = profileProvider.profile?.name;
+        final displayName = _getFirstNameForGreeting(userName);
+        return Container(
+          color: _HealthTabColors.background,
+          child: Column(
+            children: [
+              const _HealthHeader(),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(
+                    _HealthTabDimens.contentPaddingHorizontal,
+                    _HealthTabDimens.contentPaddingTop,
+                    _HealthTabDimens.contentPaddingHorizontal,
+                    _HealthTabDimens.contentPaddingBottom,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _LowRiskBanner(userName: displayName),
                   const SizedBox(height: _HealthTabDimens.sectionGap),
                   _buildCurrentReadingsSection(),
                   const SizedBox(height: _HealthTabDimens.sectionGap),
                   const _HeartRateTrendsChart(),
                   const SizedBox(height: _HealthTabDimens.sectionGap),
                   _buildLatestReadingsSection(),
-                ],
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
