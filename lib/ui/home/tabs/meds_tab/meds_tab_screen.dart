@@ -119,7 +119,11 @@ class _MedsTabScreenState extends State<MedsTabScreen> {
                                     }
                                     return Padding(
                                       padding: const EdgeInsets.only(bottom: _MedsDimens.cardGap),
-                                      child: _CompactMedicationCard(medication: med),
+                                      child: _CompactMedicationCard(
+                                        medication: med,
+                                        isMarkingTaken: medsProvider.isMarkingTaken(med.id),
+                                        onMarkAsTaken: () => medsProvider.markAsTaken(med.id),
+                                      ),
                                     );
                                   }),
                                 ],
