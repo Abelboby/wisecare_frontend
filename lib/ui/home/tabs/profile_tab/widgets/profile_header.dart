@@ -5,11 +5,15 @@ class _ProfileHeader extends StatelessWidget {
     required this.name,
     required this.memberSince,
     this.imageUrl,
+    this.onEditPhotoTap,
+    this.isUploadingPhoto = false,
   });
 
   final String name;
   final String memberSince;
   final String? imageUrl;
+  final VoidCallback? onEditPhotoTap;
+  final bool isUploadingPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +55,8 @@ class _ProfileHeader extends StatelessWidget {
                 name: name,
                 memberSince: memberSince,
                 imageUrl: imageUrl,
+                onEditPhotoTap: onEditPhotoTap,
+                isUploadingPhoto: isUploadingPhoto,
               ),
             ],
           ),
@@ -67,8 +73,6 @@ class _ProfileHeaderTopRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const _ProfileHeaderBackButton(),
-        const SizedBox(width: _ProfileTabDimens.headerTitleLeftPadding),
         Text(
           'Profile',
           style: GoogleFonts.lexend(
@@ -83,46 +87,31 @@ class _ProfileHeaderTopRow extends StatelessWidget {
   }
 }
 
-class _ProfileHeaderBackButton extends StatelessWidget {
-  const _ProfileHeaderBackButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        width: _ProfileTabDimens.headerBackButtonSize,
-        height: _ProfileTabDimens.headerBackButtonSize,
-        decoration: BoxDecoration(
-          color: Skin.color(Co.onPrimary).withValues(alpha: 0.1),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          Icons.arrow_back_rounded,
-          color: Skin.color(Co.onPrimary),
-          size: _ProfileTabDimens.headerBackButtonIconSize,
-        ),
-      ),
-    );
-  }
-}
-
 class _ProfileHeaderAvatarSection extends StatelessWidget {
   const _ProfileHeaderAvatarSection({
     required this.name,
     required this.memberSince,
     required this.imageUrl,
+    this.onEditPhotoTap,
+    this.isUploadingPhoto = false,
   });
 
   final String name;
   final String memberSince;
   final String? imageUrl;
+  final VoidCallback? onEditPhotoTap;
+  final bool isUploadingPhoto;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Center(
-          child: _ProfileHeaderAvatar(imageUrl: imageUrl),
+          child: _ProfileHeaderAvatar(
+            imageUrl: imageUrl,
+            onEditPhotoTap: onEditPhotoTap,
+            isUploadingPhoto: isUploadingPhoto,
+          ),
         ),
         const SizedBox(height: 16),
         Center(
@@ -155,9 +144,15 @@ class _ProfileHeaderAvatarSection extends StatelessWidget {
 }
 
 class _ProfileHeaderAvatar extends StatelessWidget {
-  const _ProfileHeaderAvatar({required this.imageUrl});
+  const _ProfileHeaderAvatar({
+    required this.imageUrl,
+    this.onEditPhotoTap,
+    this.isUploadingPhoto = false,
+  });
 
   final String? imageUrl;
+  final VoidCallback? onEditPhotoTap;
+  final bool isUploadingPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +196,73 @@ class _ProfileHeaderAvatar extends StatelessWidget {
                   : const _ProfileHeaderAvatarFallback(),
             ),
           ),
+          if (isUploadingPhoto)
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black26,
+                ),
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Skin.color(Co.onPrimary),
+                  ),
+                ),
+              ),
+            ),
+          if (onEditPhotoTap != null)
+            Positioned(
+              right: 8,
+              bottom: 0,
+              child: _ProfileHeaderEditButton(onTap: onEditPhotoTap),
+            ),
         ],
+      ),
+    );
+  }
+}
+
+class _ProfileHeaderEditButton extends StatelessWidget {
+  const _ProfileHeaderEditButton({this.onTap});
+
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: _ProfileTabDimens.avatarEditButtonSize,
+        height: _ProfileTabDimens.avatarEditButtonSize,
+        decoration: BoxDecoration(
+          color: Skin.color(Co.primary),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Skin.color(Co.loginHeader),
+            width: _ProfileTabDimens.avatarEditBorderWidth,
+          ),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x1A000000),
+              blurRadius: 6,
+              offset: Offset(0, 4),
+            ),
+            BoxShadow(
+              color: Color(0x1A000000),
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Icon(
+          Icons.edit_rounded,
+          color: Skin.color(Co.onPrimary),
+          size: _ProfileTabDimens.avatarEditIconSize,
+        ),
       ),
     );
   }
@@ -222,4 +283,3 @@ class _ProfileHeaderAvatarFallback extends StatelessWidget {
     );
   }
 }
-
