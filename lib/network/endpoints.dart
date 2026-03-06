@@ -9,8 +9,17 @@ class Endpoints {
   static const String authSignout = '/auth/signout';
 
   // ── User ──────────────────────────────────────────────────────────────────
-  /// GET /users/me — logged-in user's full profile.
+  /// GET/PUT /users/me — logged-in user's full profile.
   static const String usersMe = '/users/me';
+
+  /// GET/PUT /users/me/settings — notification sounds and font size.
+  static const String usersMeSettings = '/users/me/settings';
+
+  /// PUT /users/me/emergency-contact — update emergency contact details.
+  static const String usersMeEmergencyContact = '/users/me/emergency-contact';
+
+  /// POST /uploads — upload file to S3, returns public URL.
+  static const String uploads = '/uploads';
 
   // ── Vitals & Risk ─────────────────────────────────────────────────────────
   /// GET /vitals/latest/{userId}
