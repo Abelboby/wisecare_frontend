@@ -5,53 +5,60 @@ class _FloatingVitalsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: BoxDecoration(
-        color: _HomeTabColors.vitalsCardBg,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => context.read<HomeProvider>().switchTab(AppTab.health),
         borderRadius: BorderRadius.circular(_HomeTabDimens.floatingCardRadius),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 25,
-            offset: Offset(0, 20),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          decoration: BoxDecoration(
+            color: _HomeTabColors.vitalsCardBg,
+            borderRadius: BorderRadius.circular(_HomeTabDimens.floatingCardRadius),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x1A000000),
+                blurRadius: 25,
+                offset: Offset(0, 20),
+              ),
+              BoxShadow(
+                color: Color(0x14000000),
+                blurRadius: 10,
+                offset: Offset(0, 8),
+              ),
+            ],
           ),
-          BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 10,
-            offset: Offset(0, 8),
+          child: Row(
+            children: [
+              Expanded(
+                child: _VitalsSection(
+                  icon: Icons.favorite,
+                  iconColor: _HomeTabColors.heartIcon,
+                  value: '72',
+                  label: 'BPM',
+                ),
+              ),
+              Container(width: 1, height: 60, color: _HomeTabColors.vitalsDivider),
+              Expanded(
+                child: _VitalsSection(
+                  icon: Icons.water_drop_outlined,
+                  iconColor: _HomeTabColors.bpIcon,
+                  value: '120/80',
+                  label: 'BP',
+                ),
+              ),
+              Container(width: 1, height: 60, color: _HomeTabColors.vitalsDivider),
+              Expanded(
+                child: _VitalsSection(
+                  icon: Icons.shield_outlined,
+                  iconColor: _HomeTabColors.riskIcon,
+                  value: 'Low',
+                  label: 'RISK',
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _VitalsSection(
-              icon: Icons.favorite,
-              iconColor: _HomeTabColors.heartIcon,
-              value: '72',
-              label: 'BPM',
-            ),
-          ),
-          Container(width: 1, height: 60, color: _HomeTabColors.vitalsDivider),
-          Expanded(
-            child: _VitalsSection(
-              icon: Icons.water_drop_outlined,
-              iconColor: _HomeTabColors.bpIcon,
-              value: '120/80',
-              label: 'BP',
-            ),
-          ),
-          Container(width: 1, height: 60, color: _HomeTabColors.vitalsDivider),
-          Expanded(
-            child: _VitalsSection(
-              icon: Icons.shield_outlined,
-              iconColor: _HomeTabColors.riskIcon,
-              value: 'Low',
-              label: 'RISK',
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
