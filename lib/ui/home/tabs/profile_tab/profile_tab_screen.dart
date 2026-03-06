@@ -55,6 +55,8 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
                   memberSince:
                       profile != null && profile.memberSince.isNotEmpty ? 'Member since ${profile.memberSince}' : '',
                   imageUrl: profile?.profilePhotoUrl,
+                  onEditPhotoTap: provider.uploadProfilePhoto,
+                  isUploadingPhoto: provider.isUploadingPhoto,
                 ),
               ),
               SliverToBoxAdapter(
