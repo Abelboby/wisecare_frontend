@@ -1,12 +1,54 @@
 part of '../meds_tab_screen.dart';
 
 class _CompactMedicationCard extends StatelessWidget {
-  const _CompactMedicationCard({required this.medication});
+  const _CompactMedicationCard({
+    required this.medication,
+    required this.isMarkingTaken,
+    required this.onMarkAsTaken,
+  });
 
   final MedicationModel medication;
+  final bool isMarkingTaken;
+  final VoidCallback onMarkAsTaken;
 
   @override
   Widget build(BuildContext context) {
+    final isActive = !medication.isTakenToday;
+
+    Widget trailingWidget = Container(
+      width: _MedsDimens.aspirinCheckSize,
+      height: _MedsDimens.aspirinCheckSize,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: medication.isTakenToday
+              ? _MedsColors.markTakenIcon
+              : _MedsColors.aspirinCheckBorder,
+          width: 2,
+        ),
+        shape: BoxShape.circle,
+      ),
+      child: isMarkingTaken
+          ? const Padding(
+              padding: EdgeInsets.all(12),
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : Icon(
+              Icons.check_rounded,
+              color: medication.isTakenToday
+                  ? _MedsColors.markTakenIcon
+                  : _MedsColors.aspirinCheckIcon,
+              size: 20,
+            ),
+    );
+
+    if (isActive) {
+      trailingWidget = GestureDetector(
+        onTap: isMarkingTaken ? null : onMarkAsTaken,
+        behavior: HitTestBehavior.opaque,
+        child: trailingWidget,
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -64,26 +106,7 @@ class _CompactMedicationCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          Container(
-            width: _MedsDimens.aspirinCheckSize,
-            height: _MedsDimens.aspirinCheckSize,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: medication.isTakenToday
-                    ? _MedsColors.markTakenIcon
-                    : _MedsColors.aspirinCheckBorder,
-                width: 2,
-              ),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.check_rounded,
-              color: medication.isTakenToday
-                  ? _MedsColors.markTakenIcon
-                  : _MedsColors.aspirinCheckIcon,
-              size: 20,
-            ),
-          ),
+          trailingWidget,
         ],
       ),
     );
