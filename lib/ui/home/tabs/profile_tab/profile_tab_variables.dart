@@ -8,14 +8,14 @@ class _ProfileTabDimens {
   static const double headerTopPadding = 16;
   static const double headerBottomPadding = 40;
   static const double headerBorderRadius = 48;
-  static const double headerBackButtonSize = 56;
-  static const double headerBackButtonIconSize = 24;
-  static const double headerTitleLeftPadding = 16;
 
   // Avatar
   static const double avatarSize = 160;
   static const double avatarImageSize = 152;
   static const double avatarBorderWidth = 4;
+  static const double avatarEditButtonSize = 39;
+  static const double avatarEditBorderWidth = 4;
+  static const double avatarEditIconSize = 15;
 
   // Content area
   static const double contentTopPadding = 32;
