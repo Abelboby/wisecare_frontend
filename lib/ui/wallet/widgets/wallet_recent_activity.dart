@@ -1,7 +1,11 @@
 part of '../wallet_screen.dart';
 
 class _WalletRecentActivity extends StatelessWidget {
-  const _WalletRecentActivity();
+  const _WalletRecentActivity({
+    required this.transactions,
+  });
+
+  final List<WalletTransactionModel> transactions;
 
   @override
   Widget build(BuildContext context) {
@@ -37,37 +41,94 @@ class _WalletRecentActivity extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        const _ActivityItem(
+        if (transactions.isEmpty)
+          Padding(
+            padding: const EdgeInsets.all(_WalletDimens.activityItemPadding),
+            child: Text(
+              'No recent activity.',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: _WalletColors.labelText,
+              ),
+            ),
+          )
+        else
+          ...transactions.map((tx) {
+            final style = _activityStyleForCategory(tx.category);
+            final title = tx.description?.isNotEmpty == true
+                ? tx.description!
+                : _titleForCategory(tx.category);
+            final subtitle = WalletScreen.formatTransactionTime(tx.timestamp);
+            final amount = tx.isCredit
+                ? '+${_formatAmount(tx.amount)}'
+                : '-${_formatAmount(tx.amount.abs())}';
+            return Padding(
+              padding: const EdgeInsets.only(bottom: _WalletDimens.activityGap),
+              child: _ActivityItem(
+                icon: style.icon,
+                iconBgColor: style.iconBgColor,
+                iconColor: style.iconColor,
+                title: title,
+                subtitle: subtitle,
+                amount: amount,
+                isCredit: tx.isCredit,
+              ),
+            );
+          }),
+      ],
+    );
+  }
+
+  static String _formatAmount(num value) {
+    return NumberFormat.currency(
+      locale: 'en_IN',
+      symbol: '₹',
+      decimalDigits: 0,
+    ).format(value);
+  }
+
+  static String _titleForCategory(String category) {
+    switch (category.toUpperCase()) {
+      case 'GROCERY':
+        return 'Grocery Order';
+      case 'TOP_UP':
+        return 'Family Top-up';
+      case 'PHARMACY':
+      case 'MEDICAL':
+        return 'Pharmacy Bill';
+      default:
+        return 'Transaction';
+    }
+  }
+
+  static ({IconData icon, Color iconBgColor, Color iconColor}) _activityStyleForCategory(String category) {
+    switch (category.toUpperCase()) {
+      case 'GROCERY':
+        return (
           icon: Icons.shopping_cart_outlined,
           iconBgColor: _WalletColors.activityIconBgBlue,
           iconColor: _WalletColors.activityIconBlue,
-          title: 'Grocery Order',
-          subtitle: 'Today, 10:30 AM',
-          amount: '-₹150',
-          isCredit: false,
-        ),
-        const SizedBox(height: _WalletDimens.activityGap),
-        const _ActivityItem(
+        );
+      case 'TOP_UP':
+        return (
           icon: Icons.favorite_outline,
           iconBgColor: _WalletColors.activityIconBgOrange,
           iconColor: _WalletColors.activityIconOrange,
-          title: 'Family Top-up',
-          subtitle: 'Yesterday',
-          amount: '+₹1,000',
-          isCredit: true,
-        ),
-        const SizedBox(height: _WalletDimens.activityGap),
-        const _ActivityItem(
+        );
+      case 'PHARMACY':
+      case 'MEDICAL':
+        return (
           icon: Icons.medical_services_outlined,
           iconBgColor: _WalletColors.activityIconBgBlue,
           iconColor: _WalletColors.activityIconBlue,
-          title: 'Pharmacy Bill',
-          subtitle: '2 days ago',
-          amount: '-₹450',
-          isCredit: false,
-        ),
-      ],
-    );
+        );
+      default:
+        return (
+          icon: Icons.receipt_long_outlined,
+          iconBgColor: _WalletColors.activityIconBgBlue,
+          iconColor: _WalletColors.activityIconBlue,
+        );
+    }
   }
 }
 
