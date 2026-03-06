@@ -1,7 +1,13 @@
 part of '../home_tab_screen.dart';
 
 class _HomeHeader extends StatelessWidget {
-  const _HomeHeader();
+  const _HomeHeader({
+    this.profilePhotoUrl,
+    this.userName,
+  });
+
+  final String? profilePhotoUrl;
+  final String? userName;
 
   void _openWallet(BuildContext context) {
     context.push(AppRoutes.wallet.path);
@@ -10,6 +16,8 @@ class _HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topInset = MediaQuery.of(context).padding.top;
+    final displayName = _getFirstName(userName);
+    final greeting = '${_getGreetingPhrase()}, \n$displayName';
     return Container(
       width: double.infinity,
       padding: EdgeInsets.only(
@@ -46,10 +54,16 @@ class _HomeHeader extends StatelessWidget {
                       ),
                       color: _HomeTabColors.vitalsDivider,
                     ),
-                    child: const Icon(
-                      Icons.person,
-                      color: _HomeTabColors.vitalsLabel,
-                      size: 28,
+                    child: ClipOval(
+                      child: profilePhotoUrl != null && profilePhotoUrl!.isNotEmpty
+                          ? Image.network(
+                              profilePhotoUrl!,
+                              width: _HomeTabDimens.avatarSize,
+                              height: _HomeTabDimens.avatarSize,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => const _HomeHeaderAvatarFallback(),
+                            )
+                          : const _HomeHeaderAvatarFallback(),
                     ),
                   ),
                   Positioned(
@@ -100,7 +114,7 @@ class _HomeHeader extends StatelessWidget {
           ),
           const SizedBox(height: 3.25),
           Text(
-            'Good Morning, \nRaghav ji',
+            greeting,
             style: GoogleFonts.lexend(
               fontSize: 30,
               fontWeight: FontWeight.w700,
@@ -111,6 +125,19 @@ class _HomeHeader extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _HomeHeaderAvatarFallback extends StatelessWidget {
+  const _HomeHeaderAvatarFallback();
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      Icons.person,
+      color: _HomeTabColors.vitalsLabel,
+      size: 28,
     );
   }
 }
