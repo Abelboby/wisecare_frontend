@@ -116,12 +116,12 @@ class _WalletScreenState extends State<WalletScreen> {
                             const SizedBox(height: _WalletDimens.contentGap),
                             _WalletTopupSection(
                               isTopupLoading: walletProvider.isTopupLoading,
-                              onRequestTopup: () =>
-                                  _showTopupDialog(context, walletProvider),
+                              onRequestTopup: () => _showTopupDialog(context, walletProvider),
                             ),
                             const SizedBox(height: _WalletDimens.contentGap),
                             _WalletRecentActivity(
                               transactions: walletProvider.transactions,
+                              onViewAll: () => context.push('/wallet/transactions'),
                             ),
                             const SizedBox(height: 48),
                           ],
@@ -203,7 +203,7 @@ class _WalletScreenState extends State<WalletScreen> {
               child: Text('Cancel', style: GoogleFonts.poppins()),
             ),
             FilledButton(
-              onPressed: () {
+              onPressed: () async {
                 final amountStr = amountController.text.trim();
                 final amount = int.tryParse(amountStr);
                 if (amount == null || amount <= 0) {
@@ -215,12 +215,20 @@ class _WalletScreenState extends State<WalletScreen> {
                   return;
                 }
                 Navigator.of(dialogContext).pop();
-                walletProvider.requestTopup(
+                final successMessage = await walletProvider.requestTopup(
                   amount,
                   messageController.text.trim().isEmpty
                       ? null
                       : messageController.text.trim(),
                 );
+                if (context.mounted && successMessage != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(successMessage),
+                      backgroundColor: _WalletColors.creditGreen,
+                    ),
+                  );
+                }
               },
               child: Text('Request', style: GoogleFonts.poppins()),
             ),
