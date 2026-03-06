@@ -5,8 +5,6 @@ class _MedsColors {
 
   static const Color background = Color(0xFFFDF8F6);
   static const Color headerNavy = Color(0xFF1E293B);
-  static const Color headerButtonBg = Color(0x1AFFFFFF);
-  static const Color headerIcon = Color(0xFFFFFFFF);
   static const Color headerTitle = Color(0xFFFFFFFF);
   static const Color greetingText = Color(0xFF64748B);
   static const Color scheduleTitleText = Color(0xFF1E293B);
@@ -50,7 +48,6 @@ class _MedsDimens {
 
   static const double headerPaddingHorizontal = 16;
   static const double headerPaddingBottom = 24;
-  static const double headerBackButtonSize = 48;
   static const double cardRadius = 32;
   static const double imageHeight = 192;
   static const double contentPaddingH = 16;
@@ -63,4 +60,12 @@ class _MedsDimens {
   static const double aspirinImageRadius = 24;
   static const double aspirinCheckSize = 48;
   static const double refillIconCircleSize = 56;
+  static const double errorStatePadding = 24;
+  static const double refillSectionTopPadding = 8;
+}
+
+class _MedsTextSizes {
+  _MedsTextSizes._();
+
+  static const double errorMessage = 16;
 }
