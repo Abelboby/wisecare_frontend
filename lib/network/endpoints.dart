@@ -69,6 +69,16 @@ class Endpoints {
   // ── Notifications ─────────────────────────────────────────────────────────
   static const String notificationsRegister = '/notifications/register';
 
+  // ── Wallet ─────────────────────────────────────────────────────────────────
+  /// GET /wallet/summary — balance and limits (frontend format).
+  static const String walletSummary = '/wallet/summary';
+
+  /// GET /wallet/transactions — transaction history.
+  static const String walletTransactions = '/wallet/transactions';
+
+  /// POST /wallet/topup/request — elderly request top-up (body: amount, message).
+  static const String walletTopupRequest = '/wallet/topup/request';
+
   // ── Admin ─────────────────────────────────────────────────────────────────
   static const String adminStats = '/admin/stats';
   static const String adminAlerts = '/admin/alerts';
