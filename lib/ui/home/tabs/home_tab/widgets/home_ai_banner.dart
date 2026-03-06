@@ -1,38 +1,47 @@
 part of '../home_tab_screen.dart';
 
 class _HomeAIBanner extends StatelessWidget {
-  const _HomeAIBanner();
+  const _HomeAIBanner({this.userName});
+
+  final String? userName;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(_HomeTabDimens.bannerPadding),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: [
-            _HomeTabColors.bannerGradientStart,
-            _HomeTabColors.bannerGradientEnd,
-          ],
-        ),
+    final displayName = _getFirstName(userName);
+    final message = 'Did you sleep well last night, $displayName?';
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => context.push(AppRoutes.chatWithArya.path),
         borderRadius: BorderRadius.circular(_HomeTabDimens.bannerRadius),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x33DDD6FE),
-            blurRadius: 15,
-            offset: Offset(0, 10),
+        child: Container(
+          padding: const EdgeInsets.all(_HomeTabDimens.bannerPadding),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                _HomeTabColors.bannerGradientStart,
+                _HomeTabColors.bannerGradientEnd,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(_HomeTabDimens.bannerRadius),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x33DDD6FE),
+                blurRadius: 15,
+                offset: Offset(0, 10),
+              ),
+              BoxShadow(
+                color: Color(0x26DDD6FE),
+                blurRadius: 6,
+                offset: Offset(0, 4),
+              ),
+            ],
           ),
-          BoxShadow(
-            color: Color(0x26DDD6FE),
-            blurRadius: 6,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Stack(
+          child: Row(
+            children: [
+              Stack(
             clipBehavior: Clip.none,
             children: [
               Container(
@@ -90,7 +99,7 @@ class _HomeAIBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 1),
                 Text(
-                  'Did you sleep well last night, Raghav ji?',
+                  message,
                   style: GoogleFonts.lexend(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -102,7 +111,7 @@ class _HomeAIBanner extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () => context.push(AppRoutes.chatWithArya.path),
             child: Container(
               width: _HomeTabDimens.micButtonSize,
               height: _HomeTabDimens.micButtonSize,
@@ -114,6 +123,8 @@ class _HomeAIBanner extends StatelessWidget {
             ),
           ),
         ],
+          ),
+        ),
       ),
     );
   }
