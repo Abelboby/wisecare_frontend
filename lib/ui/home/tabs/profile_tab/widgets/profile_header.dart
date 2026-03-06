@@ -14,13 +14,13 @@ class _ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: _ProfileTabColors.navyHeader,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: Skin.color(Co.loginHeader),
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(_ProfileTabDimens.headerBorderRadius),
           bottomRight: Radius.circular(_ProfileTabDimens.headerBorderRadius),
         ),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Color(0x1A000000),
             blurRadius: 15,
@@ -45,20 +45,29 @@ class _ProfileHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTopRow(context),
+              const _ProfileHeaderTopRow(),
               const SizedBox(height: 24),
-              _buildAvatarSection(),
+              _ProfileHeaderAvatarSection(
+                name: name,
+                memberSince: memberSince,
+                imageUrl: imageUrl,
+              ),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildTopRow(BuildContext context) {
+class _ProfileHeaderTopRow extends StatelessWidget {
+  const _ProfileHeaderTopRow();
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
-        _buildBackButton(context),
+        const _ProfileHeaderBackButton(),
         const SizedBox(width: _ProfileTabDimens.headerTitleLeftPadding),
         Text(
           'Profile',
@@ -66,35 +75,55 @@ class _ProfileHeader extends StatelessWidget {
             fontSize: 24,
             fontWeight: FontWeight.w700,
             height: 32 / 24,
-            color: _ProfileTabColors.headerTitle,
+            color: Skin.color(Co.onPrimary),
           ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildBackButton(BuildContext context) {
+class _ProfileHeaderBackButton extends StatelessWidget {
+  const _ProfileHeaderBackButton();
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
         width: _ProfileTabDimens.headerBackButtonSize,
         height: _ProfileTabDimens.headerBackButtonSize,
-        decoration: const BoxDecoration(
-          color: _ProfileTabColors.headerBackButtonBg,
+        decoration: BoxDecoration(
+          color: Skin.color(Co.onPrimary).withValues(alpha: 0.1),
           shape: BoxShape.circle,
         ),
-        child: const Icon(
+        child: Icon(
           Icons.arrow_back_rounded,
-          color: _ProfileTabColors.headerTitle,
+          color: Skin.color(Co.onPrimary),
           size: _ProfileTabDimens.headerBackButtonIconSize,
         ),
       ),
     );
   }
+}
 
-  Widget _buildAvatarSection() {
+class _ProfileHeaderAvatarSection extends StatelessWidget {
+  const _ProfileHeaderAvatarSection({
+    required this.name,
+    required this.memberSince,
+    required this.imageUrl,
+  });
+
+  final String name;
+  final String memberSince;
+  final String? imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
-        Center(child: _buildAvatar()),
+        Center(
+          child: _ProfileHeaderAvatar(imageUrl: imageUrl),
+        ),
         const SizedBox(height: 16),
         Center(
           child: Text(
@@ -104,7 +133,7 @@ class _ProfileHeader extends StatelessWidget {
               fontWeight: FontWeight.w700,
               height: 36 / 30,
               letterSpacing: -0.75,
-              color: _ProfileTabColors.headerTitle,
+              color: Skin.color(Co.onPrimary),
             ),
           ),
         ),
@@ -116,15 +145,22 @@ class _ProfileHeader extends StatelessWidget {
               fontSize: 18,
               fontWeight: FontWeight.w400,
               height: 28 / 18,
-              color: _ProfileTabColors.headerSubtitle,
+              color: Skin.color(Co.headerSubtitle),
             ),
           ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildAvatar() {
+class _ProfileHeaderAvatar extends StatelessWidget {
+  const _ProfileHeaderAvatar({required this.imageUrl});
+
+  final String? imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       width: _ProfileTabDimens.avatarSize,
       height: _ProfileTabDimens.avatarSize,
@@ -135,9 +171,9 @@ class _ProfileHeader extends StatelessWidget {
             height: _ProfileTabDimens.avatarSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color(0xFFE2E8F0),
+              color: Skin.color(Co.surface),
               border: Border.all(
-                color: _ProfileTabColors.avatarBorder,
+                color: Skin.color(Co.primary).withValues(alpha: 0.5),
                 width: _ProfileTabDimens.avatarBorderWidth,
               ),
               boxShadow: const [
@@ -160,61 +196,30 @@ class _ProfileHeader extends StatelessWidget {
                       width: _ProfileTabDimens.avatarImageSize,
                       height: _ProfileTabDimens.avatarImageSize,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => _buildAvatarFallback(),
+                      errorBuilder: (_, __, ___) => const _ProfileHeaderAvatarFallback(),
                     )
-                  : _buildAvatarFallback(),
+                  : const _ProfileHeaderAvatarFallback(),
             ),
           ),
-          Positioned(
-            right: 8,
-            bottom: 0,
-            child: _buildEditButton(),
-          ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildAvatarFallback() {
-    return Container(
-      color: const Color(0xFFE2E8F0),
-      child: const Icon(
-        Icons.person_rounded,
-        size: 80,
-        color: Color(0xFF94A3B8),
-      ),
-    );
-  }
-
-  Widget _buildEditButton() {
-    return Container(
-      width: _ProfileTabDimens.avatarEditButtonSize,
-      height: _ProfileTabDimens.avatarEditButtonSize,
-      decoration: BoxDecoration(
-        color: _ProfileTabColors.avatarEditBg,
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: _ProfileTabColors.avatarEditBorder,
-          width: _ProfileTabDimens.avatarEditBorderWidth,
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 6,
-            offset: Offset(0, 4),
-          ),
-          BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: const Icon(
-        Icons.edit_rounded,
-        color: Colors.white,
-        size: _ProfileTabDimens.avatarEditIconSize,
       ),
     );
   }
 }
+
+class _ProfileHeaderAvatarFallback extends StatelessWidget {
+  const _ProfileHeaderAvatarFallback();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Skin.color(Co.surface),
+      child: Icon(
+        Icons.person_rounded,
+        size: 80,
+        color: Skin.color(Co.textMuted),
+      ),
+    );
+  }
+}
+
