@@ -1,7 +1,21 @@
 part of '../wallet_screen.dart';
 
 class _WalletBalanceCard extends StatelessWidget {
-  const _WalletBalanceCard();
+  const _WalletBalanceCard({
+    required this.balance,
+    required this.currency,
+  });
+
+  final num balance;
+  final String currency;
+
+  static String _formatAmount(num value) {
+    return NumberFormat.currency(
+      locale: 'en_IN',
+      symbol: '₹',
+      decimalDigits: 0,
+    ).format(value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +48,7 @@ class _WalletBalanceCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '₹5,000',
+            _formatAmount(balance),
             style: GoogleFonts.poppins(
               fontSize: 40,
               fontWeight: FontWeight.w700,
