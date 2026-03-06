@@ -13,6 +13,7 @@ part 'widgets/meds_dose_section_header.dart';
 part 'widgets/featured_medication_card.dart';
 part 'widgets/compact_medication_card.dart';
 part 'widgets/refill_prescription_card.dart';
+part 'widgets/refill_prescription_dialog.dart';
 
 class MedsTabScreen extends StatefulWidget {
   const MedsTabScreen({super.key});
@@ -131,15 +132,29 @@ class _MedsTabScreenState extends State<MedsTabScreen> {
                             ),
                           );
                         }),
-                        ...schedule.refillSuggestions.map((suggestion) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: _MedsDimens.refillSectionTopPadding),
-                            child: _RefillPrescriptionCard(
-                              suggestion: suggestion,
-                              onTap: () => medsProvider.requestRefill(suggestion.medicationId),
+                        if (schedule.refillSuggestions.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: _MedsDimens.refillSectionTopPadding,
                             ),
-                          );
-                        }),
+                            child: _RefillPrescriptionCard(
+                              medicineCount: schedule.refillSuggestions.length,
+                              onTap: () {
+                                _RefillPrescriptionDialog.show(
+                                  context,
+                                  suggestions: schedule.refillSuggestions,
+                                  onConfirm: (ids) async {
+                                    for (final id in ids) {
+                                      await medsProvider.requestRefill(id);
+                                    }
+                                    if (context.mounted) {
+                                      medsProvider.loadSchedule();
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                          ),
                       ],
                     ),
                   ),
