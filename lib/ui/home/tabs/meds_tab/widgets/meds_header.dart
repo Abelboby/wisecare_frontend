@@ -31,45 +31,18 @@ class _MedsHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _MedsBackButton(),
-          Expanded(
-            child: Center(
-              child: Text(
-                'My Medicines',
-                style: GoogleFonts.lexend(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  height: 32 / 24,
-                  letterSpacing: 0.6,
-                  color: _MedsColors.headerTitle,
-                ),
-              ),
+          const SizedBox(width: 8),
+          Text(
+            'My Medicines',
+            style: GoogleFonts.lexend(
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              height: 32 / 24,
+              letterSpacing: 0.6,
+              color: _MedsColors.headerTitle,
             ),
           ),
-          const SizedBox(width: _MedsDimens.headerBackButtonSize),
         ],
-      ),
-    );
-  }
-}
-
-class _MedsBackButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.read<HomeProvider>().switchTab(AppTab.home),
-      child: Container(
-        width: 34,
-        height: 34,
-        decoration: BoxDecoration(
-          color: _MedsColors.headerButtonBg,
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(
-          Icons.chevron_left_rounded,
-          color: _MedsColors.headerIcon,
-          size: 28,
-        ),
       ),
     );
   }
