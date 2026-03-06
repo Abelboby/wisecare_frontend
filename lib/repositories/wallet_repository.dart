@@ -5,8 +5,7 @@ import 'package:wisecare_frontend/services/wallet_service.dart';
 
 /// Wallet data orchestration. Only this layer talks to WalletService.
 class WalletRepository {
-  WalletRepository({WalletService? walletService})
-      : _walletService = walletService ?? WalletService();
+  WalletRepository({WalletService? walletService}) : _walletService = walletService ?? WalletService();
 
   final WalletService _walletService;
 
@@ -14,8 +13,11 @@ class WalletRepository {
     return _walletService.getWalletSummary();
   }
 
-  Future<WalletTransactionsResponseModel> getTransactions({int? limit}) async {
-    return _walletService.getTransactions(limit: limit);
+  Future<WalletTransactionsResponseModel> getTransactions({
+    int? limit,
+    int? offset,
+  }) async {
+    return _walletService.getTransactions(limit: limit, offset: offset);
   }
 
   Future<TopupRequestModel> requestTopup({
