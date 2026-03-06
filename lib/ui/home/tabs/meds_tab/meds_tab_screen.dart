@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:wisecare_frontend/enums/app_enums.dart';
 import 'package:wisecare_frontend/models/meds/medication_model.dart';
 import 'package:wisecare_frontend/models/meds/refill_suggestion_model.dart';
-import 'package:wisecare_frontend/provider/home_provider.dart';
 import 'package:wisecare_frontend/provider/meds_provider.dart';
 
 part 'meds_tab_functions.dart';
@@ -53,12 +51,12 @@ class _MedsTabScreenState extends State<MedsTabScreen> {
                 if (medsProvider.errorMessage != null && medsProvider.schedule == null) {
                   return Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.all(_MedsDimens.errorStatePadding),
                       child: Text(
                         medsProvider.errorMessage!,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.lexend(
-                          fontSize: 16,
+                          fontSize: _MedsTextSizes.errorMessage,
                           color: _MedsColors.greetingText,
                         ),
                       ),
@@ -85,7 +83,7 @@ class _MedsTabScreenState extends State<MedsTabScreen> {
                           final featuredIdx = _featuredMedIndex(phase, section.medications);
                           final iconStyle = _sectionIconStyle(section.label);
 
-                          // Past sections: full opacity, all compact (taken or missed).
+                          // Past sections: full opacity, all compact (taken or missed)s.
                           // Current section: full opacity, first untaken is featured.
                           // Upcoming sections: dimmed, all compact.
                           final opacity = phase == _SectionPhase.upcoming ? 0.7 : 1.0;
@@ -131,7 +129,7 @@ class _MedsTabScreenState extends State<MedsTabScreen> {
                         }),
                         ...schedule.refillSuggestions.map((suggestion) {
                           return Padding(
-                            padding: const EdgeInsets.only(top: 8),
+                            padding: const EdgeInsets.only(top: _MedsDimens.refillSectionTopPadding),
                             child: _RefillPrescriptionCard(
                               suggestion: suggestion,
                               onTap: () => medsProvider.requestRefill(suggestion.medicationId),
