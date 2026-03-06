@@ -5,8 +5,7 @@ import 'package:wisecare_frontend/repositories/meds_repository.dart';
 
 /// Meds tab state. Holds schedule and loading/error. Load schedule when opening meds tab.
 class MedsProvider extends ChangeNotifier {
-  MedsProvider({MedsRepository? repository})
-      : _repository = repository ?? MedsRepository();
+  MedsProvider({MedsRepository? repository}) : _repository = repository ?? MedsRepository();
 
   final MedsRepository _repository;
 
@@ -22,8 +21,7 @@ class MedsProvider extends ChangeNotifier {
   /// Medication IDs currently being marked as taken (API call in-flight).
   final Set<String> _markingTakenIds = {};
 
-  bool isMarkingTaken(String medicationId) =>
-      _markingTakenIds.contains(medicationId);
+  bool isMarkingTaken(String medicationId) => _markingTakenIds.contains(medicationId);
 
   Future<void> loadSchedule({String? date}) async {
     _errorMessage = null;
@@ -33,9 +31,7 @@ class MedsProvider extends ChangeNotifier {
       _schedule = await _repository.getSchedule(date: date);
       _errorMessage = null;
     } catch (e) {
-      _errorMessage = e is Exception
-          ? e.toString().replaceFirst('Exception: ', '')
-          : e.toString();
+      _errorMessage = e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString();
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -56,9 +52,7 @@ class MedsProvider extends ChangeNotifier {
       // correct isTakenToday values, and any new dose sections to display.
       await _silentRefresh();
     } catch (e) {
-      _errorMessage = e is Exception
-          ? e.toString().replaceFirst('Exception: ', '')
-          : e.toString();
+      _errorMessage = e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString();
       notifyListeners();
     } finally {
       _markingTakenIds.remove(medicationId);
@@ -70,9 +64,7 @@ class MedsProvider extends ChangeNotifier {
     try {
       await _repository.requestRefill(medicationId);
     } catch (e) {
-      _errorMessage = e is Exception
-          ? e.toString().replaceFirst('Exception: ', '')
-          : e.toString();
+      _errorMessage = e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString();
       notifyListeners();
     }
   }
