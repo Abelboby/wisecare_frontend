@@ -69,3 +69,5 @@ class _MedsTextSizes {
 
   static const double errorMessage = 16;
 }
+
+typedef _RefillOnConfirmCallback = Future<void> Function(List<String> medicationIds);
