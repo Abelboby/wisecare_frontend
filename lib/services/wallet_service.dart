@@ -23,11 +23,15 @@ class WalletService {
     }
   }
 
-  /// GET /wallet/transactions — transaction history.
-  Future<WalletTransactionsResponseModel> getTransactions({int? limit}) async {
+  /// GET /wallet/transactions — transaction history. Use limit + offset for pagination.
+  Future<WalletTransactionsResponseModel> getTransactions({
+    int? limit,
+    int? offset,
+  }) async {
     try {
       final queryParams = <String, dynamic>{};
       if (limit != null) queryParams['limit'] = limit;
+      if (offset != null) queryParams['offset'] = offset;
       final response = await DioHelper.instance.get<Map<String, dynamic>>(
         Endpoints.walletTransactions,
         queryParameters: queryParams.isNotEmpty ? queryParams : null,
