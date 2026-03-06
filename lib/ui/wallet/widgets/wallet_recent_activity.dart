@@ -3,9 +3,11 @@ part of '../wallet_screen.dart';
 class _WalletRecentActivity extends StatelessWidget {
   const _WalletRecentActivity({
     required this.transactions,
+    required this.onViewAll,
   });
 
   final List<WalletTransactionModel> transactions;
+  final VoidCallback onViewAll;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class _WalletRecentActivity extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: onViewAll,
                 child: Text(
                   'View All',
                   style: GoogleFonts.poppins(
@@ -55,13 +57,9 @@ class _WalletRecentActivity extends StatelessWidget {
         else
           ...transactions.map((tx) {
             final style = _activityStyleForCategory(tx.category);
-            final title = tx.description?.isNotEmpty == true
-                ? tx.description!
-                : _titleForCategory(tx.category);
+            final title = tx.description?.isNotEmpty == true ? tx.description! : _titleForCategory(tx.category);
             final subtitle = WalletScreen.formatTransactionTime(tx.timestamp);
-            final amount = tx.isCredit
-                ? '+${_formatAmount(tx.amount)}'
-                : '-${_formatAmount(tx.amount.abs())}';
+            final amount = tx.isCredit ? '+${_formatAmount(tx.amount)}' : '-${_formatAmount(tx.amount.abs())}';
             return Padding(
               padding: const EdgeInsets.only(bottom: _WalletDimens.activityGap),
               child: _ActivityItem(
