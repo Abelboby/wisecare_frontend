@@ -1,7 +1,13 @@
 part of '../wallet_screen.dart';
 
 class _WalletHeader extends StatelessWidget {
-  const _WalletHeader();
+  const _WalletHeader({
+    required this.userName,
+    required this.accountLabel,
+  });
+
+  final String userName;
+  final String accountLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +74,7 @@ class _WalletHeader extends StatelessWidget {
           ),
           const SizedBox(height: _WalletDimens.headerGap),
           Text(
-            'Namaste, Raghav ji',
+            'Namaste, ${userName.trim().isNotEmpty ? userName : 'User'} ji',
             style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.w400,
@@ -78,7 +84,7 @@ class _WalletHeader extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'WISECARE ACCOUNT',
+            accountLabel,
             style: GoogleFonts.poppins(
               fontSize: 12,
               fontWeight: FontWeight.w600,
