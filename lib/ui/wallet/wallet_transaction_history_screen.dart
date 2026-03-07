@@ -11,12 +11,10 @@ class WalletTransactionHistoryScreen extends StatefulWidget {
   const WalletTransactionHistoryScreen({super.key});
 
   @override
-  State<WalletTransactionHistoryScreen> createState() =>
-      _WalletTransactionHistoryScreenState();
+  State<WalletTransactionHistoryScreen> createState() => _WalletTransactionHistoryScreenState();
 }
 
-class _WalletTransactionHistoryScreenState
-    extends State<WalletTransactionHistoryScreen> {
+class _WalletTransactionHistoryScreenState extends State<WalletTransactionHistoryScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _initialLoadDone = false;
 
@@ -68,7 +66,7 @@ class _WalletTransactionHistoryScreenState
         ),
         title: Text(
           'Transaction History',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.lexend(
             fontSize: 20,
             fontWeight: FontWeight.w700,
             color: Colors.white,
@@ -79,19 +77,17 @@ class _WalletTransactionHistoryScreenState
       ),
       body: Consumer<WalletProvider>(
         builder: (context, walletProvider, _) {
-          if (walletProvider.historyInitialLoading &&
-              walletProvider.historyTransactions.isEmpty) {
+          if (walletProvider.historyInitialLoading && walletProvider.historyTransactions.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (walletProvider.historyError != null &&
-              walletProvider.historyTransactions.isEmpty) {
+          if (walletProvider.historyError != null && walletProvider.historyTransactions.isEmpty) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Text(
                   walletProvider.historyError!,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 16,
                     color: _headingText,
                   ),
@@ -104,7 +100,7 @@ class _WalletTransactionHistoryScreenState
             return Center(
               child: Text(
                 'No transactions yet.',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.lexend(
                   fontSize: 16,
                   color: _labelText,
                 ),
@@ -120,9 +116,8 @@ class _WalletTransactionHistoryScreenState
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Center(
-                    child: walletProvider.historyLoadingMore
-                        ? const CircularProgressIndicator()
-                        : const SizedBox.shrink(),
+                    child:
+                        walletProvider.historyLoadingMore ? const CircularProgressIndicator() : const SizedBox.shrink(),
                   ),
                 );
               }
