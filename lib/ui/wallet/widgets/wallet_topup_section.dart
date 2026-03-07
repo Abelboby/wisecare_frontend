@@ -60,7 +60,7 @@ class _WalletTopupSection extends StatelessWidget {
                   const SizedBox(width: 16),
                   Text(
                     isTopupLoading ? 'Sending request...' : 'Request Top-up',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.lexend(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       height: 28 / 20,
@@ -78,7 +78,7 @@ class _WalletTopupSection extends StatelessWidget {
           child: Text(
             'Taps your family members to add funds for you.',
             textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 14,
               fontWeight: FontWeight.w400,
               height: 20 / 14,
