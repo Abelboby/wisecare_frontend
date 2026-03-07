@@ -6,6 +6,7 @@ import 'package:wisecare_frontend/ui/chat/chat_with_arya_screen.dart';
 import 'package:wisecare_frontend/ui/emergency_sos/emergency_sos_screen.dart';
 import 'package:wisecare_frontend/ui/home/home_screen.dart';
 import 'package:wisecare_frontend/ui/login/login_screen.dart';
+import 'package:wisecare_frontend/ui/signup/signup_screen.dart';
 import 'package:wisecare_frontend/ui/splash/splash_screen.dart';
 import 'package:wisecare_frontend/ui/wallet/wallet_screen.dart';
 import 'package:wisecare_frontend/ui/wallet/wallet_transaction_history_screen.dart';
@@ -32,6 +33,12 @@ abstract class AppRoutes {
     builder: (BuildContext context, GoRouterState state) => const LoginScreen(),
   );
 
+  static final AppRoute signup = AppRoute(
+    path: '/signup',
+    name: 'Signup',
+    builder: (BuildContext context, GoRouterState state) => const SignupScreen(),
+  );
+
   static final AppRoute chatWithArya = AppRoute(
     path: '/chat-with-arya',
     name: 'ChatWithArya',
@@ -53,12 +60,11 @@ abstract class AppRoutes {
   static final AppRoute walletTransactions = AppRoute(
     path: '/wallet/transactions',
     name: 'WalletTransactions',
-    builder: (BuildContext context, GoRouterState state) =>
-        const WalletTransactionHistoryScreen(),
+    builder: (BuildContext context, GoRouterState state) => const WalletTransactionHistoryScreen(),
   );
 
   static List<AppRoute> get all =>
-      [splash, home, login, chatWithArya, emergencySos, wallet, walletTransactions];
+      [splash, home, login, signup, chatWithArya, emergencySos, wallet, walletTransactions];
 
-  static List<AppRoute> get testableRoutes => [home, login];
+  static List<AppRoute> get testableRoutes => [home, login, signup];
 }
