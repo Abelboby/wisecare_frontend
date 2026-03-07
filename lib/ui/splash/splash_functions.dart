@@ -9,9 +9,26 @@ extension _SplashScreenFunctions on _SplashScreenState {
     final hasToken = await AuthStorageService.hasStoredAuthToken();
     if (!mounted) return;
     if (hasToken) {
-      AppNavigator.navigate(AppRoutes.home);
+      await _navigateByOnboardingStep();
     } else {
       AppNavigator.navigate(AppRoutes.login);
+    }
+  }
+
+  /// Fetches GET /users/me and routes to onboarding or home based on onboardingStep.
+  Future<void> _navigateByOnboardingStep() async {
+    try {
+      final profile = await ProfileRepository().getProfile();
+      if (!mounted) return;
+      final step = profile.onboardingStep.trim().toUpperCase();
+      if (step.isNotEmpty && step != 'COMPLETE') {
+        AppNavigator.navigateToOnboarding(step);
+      } else {
+        AppNavigator.navigate(AppRoutes.home);
+      }
+    } catch (_) {
+      if (!mounted) return;
+      AppNavigator.navigate(AppRoutes.home);
     }
   }
 }
