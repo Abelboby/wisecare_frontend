@@ -279,9 +279,10 @@ class _SignupCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const _SignupCardHeading(),
-            const SizedBox(height: _SignupDimens.cardGap),
-            const _SignupRoleSelector(),
-            const SizedBox(height: _SignupDimens.cardGap),
+            const SizedBox(height: 16),
+            // Role selector (elderly vs family) commented out — family signup not available in-app yet; uncomment for future integration.
+            // const _SignupRoleSelector(),
+            // const SizedBox(height: _SignupDimens.cardGap),
             _SignupFullNameField(
               controller: fullNameController,
               focusNode: fullNameFocusNode,
@@ -335,8 +336,8 @@ class _SignupCardHeading extends StatelessWidget {
   }
 }
 
-// ── Role Selector ─────────────────────────────────────────────────────────────
-
+// ── Role Selector (commented out: family signup not available in-app yet; uncomment for future integration) ───
+/*
 class _SignupRoleSelector extends StatelessWidget {
   const _SignupRoleSelector();
 
@@ -372,8 +373,8 @@ class _SignupRoleToggle extends StatelessWidget {
       children: [
         _SignupRoleRow(
           label: "I'm a senior",
-          isSelected: provider.role == UserRole.sevakar,
-          onTap: () => provider.selectRole(UserRole.sevakar),
+          isSelected: provider.role == UserRole.senior,
+          onTap: () => provider.selectRole(UserRole.senior),
         ),
         const SizedBox(height: 12),
         _SignupRoleRow(
@@ -447,6 +448,7 @@ class _SignupRoleRow extends StatelessWidget {
     );
   }
 }
+*/
 
 // ── Form Fields ───────────────────────────────────────────────────────────────
 
