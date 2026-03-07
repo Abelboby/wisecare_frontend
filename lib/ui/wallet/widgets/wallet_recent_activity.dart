@@ -20,7 +20,7 @@ class _WalletRecentActivity extends StatelessWidget {
             children: [
               Text(
                 'Recent Activity',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.lexend(
                   fontSize: _WalletDimens.sectionTitleFontSize,
                   fontWeight: FontWeight.w700,
                   height: _WalletDimens.sectionTitleLineHeight / _WalletDimens.sectionTitleFontSize,
@@ -31,7 +31,7 @@ class _WalletRecentActivity extends StatelessWidget {
                 onTap: onViewAll,
                 child: Text(
                   'View All',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     height: 24 / 16,
@@ -48,7 +48,7 @@ class _WalletRecentActivity extends StatelessWidget {
             padding: const EdgeInsets.all(_WalletDimens.activityItemPadding),
             child: Text(
               'No recent activity.',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.lexend(
                 fontSize: 14,
                 color: _WalletColors.labelText,
               ),
@@ -189,7 +189,7 @@ class _ActivityItem extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     height: 23 / 18,
@@ -199,7 +199,7 @@ class _ActivityItem extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     height: 20 / 14,
@@ -211,7 +211,7 @@ class _ActivityItem extends StatelessWidget {
           ),
           Text(
             amount,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 18,
               fontWeight: FontWeight.w700,
               height: 28 / 18,
