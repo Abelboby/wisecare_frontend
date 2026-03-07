@@ -9,6 +9,7 @@ import 'package:wisecare_frontend/ui/login/login_screen.dart';
 import 'package:wisecare_frontend/ui/signup/signup_screen.dart';
 import 'package:wisecare_frontend/ui/splash/splash_screen.dart';
 import 'package:wisecare_frontend/ui/wallet/wallet_screen.dart';
+import 'package:wisecare_frontend/ui/onboarding/onboarding_screen.dart';
 import 'package:wisecare_frontend/ui/wallet/wallet_transaction_history_screen.dart';
 
 /// All app routes. Register here and add to [all].
@@ -63,8 +64,17 @@ abstract class AppRoutes {
     builder: (BuildContext context, GoRouterState state) => const WalletTransactionHistoryScreen(),
   );
 
+  static final AppRoute onboarding = AppRoute(
+    path: '/onboarding',
+    name: 'Onboarding',
+    builder: (BuildContext context, GoRouterState state) {
+      final step = state.uri.queryParameters['step'] ?? 'BASIC_INFO';
+      return OnboardingScreen(initialStep: step);
+    },
+  );
+
   static List<AppRoute> get all =>
-      [splash, home, login, signup, chatWithArya, emergencySos, wallet, walletTransactions];
+      [splash, home, login, signup, chatWithArya, emergencySos, wallet, walletTransactions, onboarding];
 
   static List<AppRoute> get testableRoutes => [home, login, signup];
 }

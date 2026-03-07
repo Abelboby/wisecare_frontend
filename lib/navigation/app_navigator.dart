@@ -40,6 +40,12 @@ class AppNavigator {
     router.go(route.path);
   }
 
+  /// Navigate to onboarding at the given step (BASIC_INFO, MEDICATIONS, INVITE).
+  static void navigateToOnboarding(String step) {
+    selectedRouteNotifier.value = AppRoutes.onboarding;
+    router.go('${AppRoutes.onboarding.path}?step=$step');
+  }
+
   static void goBack() {
     router.pop();
   }
