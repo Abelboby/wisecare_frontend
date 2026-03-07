@@ -61,7 +61,7 @@ class _WalletHeader extends StatelessWidget {
                 child: Text(
                   'My Wallet',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                     height: 32 / 24,
@@ -75,7 +75,7 @@ class _WalletHeader extends StatelessWidget {
           const SizedBox(height: _WalletDimens.headerGap),
           Text(
             'Namaste, ${userName.trim().isNotEmpty ? userName : 'User'} ji',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 18,
               fontWeight: FontWeight.w400,
               height: 28 / 18,
@@ -85,7 +85,7 @@ class _WalletHeader extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             accountLabel,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               height: 16 / 12,
