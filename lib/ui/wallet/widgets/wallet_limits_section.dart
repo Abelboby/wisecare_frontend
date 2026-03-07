@@ -18,7 +18,7 @@ class _WalletLimitsSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             'Your Limits',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: _WalletDimens.sectionTitleFontSize,
               fontWeight: FontWeight.w700,
               height: _WalletDimens.sectionTitleLineHeight / _WalletDimens.sectionTitleFontSize,
@@ -89,7 +89,7 @@ class _SpendingLimitCard extends StatelessWidget {
                   children: [
                     Text(
                       label,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.lexend(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         height: 24 / 16,
@@ -103,7 +103,7 @@ class _SpendingLimitCard extends StatelessWidget {
                       children: [
                         Text(
                           '₹$spent',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.lexend(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                             height: 28 / 20,
@@ -112,7 +112,7 @@ class _SpendingLimitCard extends StatelessWidget {
                         ),
                         Text(
                           ' / ₹$limit',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.lexend(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             height: 20 / 14,
@@ -132,7 +132,7 @@ class _SpendingLimitCard extends StatelessWidget {
                 ),
                 child: Text(
                   '₹$remaining Left',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     height: 20 / 14,
