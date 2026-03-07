@@ -76,7 +76,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 child: Text(
                   walletProvider.errorMessage!,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 16,
                     color: _WalletColors.headingText,
                   ),
@@ -144,7 +144,7 @@ class _WalletScreenState extends State<WalletScreen> {
         return AlertDialog(
           title: Text(
             'Request Top-up',
-            style: GoogleFonts.poppins(fontWeight: FontWeight.w700),
+            style: GoogleFonts.lexend(fontWeight: FontWeight.w700),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -153,7 +153,7 @@ class _WalletScreenState extends State<WalletScreen> {
               children: [
                 Text(
                   'Amount (₹)',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: _WalletColors.labelText,
@@ -175,7 +175,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 const SizedBox(height: 16),
                 Text(
                   'Message (optional)',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: _WalletColors.labelText,
@@ -200,7 +200,7 @@ class _WalletScreenState extends State<WalletScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text('Cancel', style: GoogleFonts.poppins()),
+              child: Text('Cancel', style: GoogleFonts.lexend()),
             ),
             FilledButton(
               onPressed: () async {
@@ -217,9 +217,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 Navigator.of(dialogContext).pop();
                 final successMessage = await walletProvider.requestTopup(
                   amount,
-                  messageController.text.trim().isEmpty
-                      ? null
-                      : messageController.text.trim(),
+                  messageController.text.trim().isEmpty ? null : messageController.text.trim(),
                 );
                 if (context.mounted && successMessage != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -230,7 +228,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   );
                 }
               },
-              child: Text('Request', style: GoogleFonts.poppins()),
+              child: Text('Request', style: GoogleFonts.lexend()),
             ),
           ],
         );
