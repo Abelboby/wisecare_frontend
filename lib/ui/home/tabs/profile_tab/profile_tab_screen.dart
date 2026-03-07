@@ -54,6 +54,7 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
                   name: profile?.name ?? '—',
                   memberSince:
                       profile != null && profile.memberSince.isNotEmpty ? 'Member since ${profile.memberSince}' : '',
+                  role: profile?.role,
                   imageUrl: profile?.profilePhotoUrl,
                   onEditPhotoTap: provider.uploadProfilePhoto,
                   isUploadingPhoto: provider.isUploadingPhoto,
