@@ -91,9 +91,8 @@ class WalletTransactionTile extends StatelessWidget {
         ? transaction.description!
         : _titleForCategory(transaction.category);
     final subtitle = formatTime(transaction.timestamp);
-    final amount = transaction.isCredit
-        ? '+${_formatAmount(transaction.amount)}'
-        : '-${_formatAmount(transaction.amount.abs())}';
+    final amount =
+        transaction.isCredit ? '+${_formatAmount(transaction.amount)}' : '-${_formatAmount(transaction.amount.abs())}';
     final amountColor = transaction.isCredit ? _creditGreen : _debitRed;
 
     return Container(
@@ -130,7 +129,7 @@ class WalletTransactionTile extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     height: 23 / 18,
@@ -140,7 +139,7 @@ class WalletTransactionTile extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     height: 20 / 14,
@@ -152,7 +151,7 @@ class WalletTransactionTile extends StatelessWidget {
           ),
           Text(
             amount,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 18,
               fontWeight: FontWeight.w700,
               height: 28 / 18,
