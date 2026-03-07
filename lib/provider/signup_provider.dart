@@ -1,15 +1,13 @@
 import 'package:flutter/foundation.dart';
 
 import 'package:wisecare_frontend/navigation/app_navigator.dart';
-import 'package:wisecare_frontend/navigation/routes.dart';
 import 'package:wisecare_frontend/repositories/signup_repository.dart';
 
-enum UserRole { sevakar, familyMember }
+enum UserRole { senior, familyMember }
 
 /// Signup screen state. Calls repository only.
 class SignupProvider extends ChangeNotifier {
-  SignupProvider({SignupRepository? repository})
-      : _repository = repository ?? SignupRepository();
+  SignupProvider({SignupRepository? repository}) : _repository = repository ?? SignupRepository();
 
   final SignupRepository _repository;
 
@@ -40,7 +38,7 @@ class SignupProvider extends ChangeNotifier {
   String? _city;
   String? get city => _city;
 
-  UserRole _role = UserRole.sevakar;
+  UserRole _role = UserRole.senior;
   UserRole get role => _role;
 
   bool _isPasswordVisible = false;
@@ -82,20 +80,20 @@ class SignupProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      await _repository.signUp(
+      final model = await _repository.signUp(
         fullName: _fullName,
         email: _email,
         password: _password,
         phone: _mobile,
         city: _city ?? '',
-        role: _role == UserRole.sevakar ? 'ELDERLY' : 'FAMILY',
+        role: _role == UserRole.senior ? 'ELDERLY' : 'FAMILY',
       );
       _isLoading = false;
       notifyListeners();
-      AppNavigator.navigate(AppRoutes.home);
+      final step = model.onboardingStep ?? 'BASIC_INFO';
+      AppNavigator.navigateToOnboarding(step);
     } catch (e) {
-      _errorMessage =
-          e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString();
+      _errorMessage = e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString();
       _isLoading = false;
       notifyListeners();
     }
