@@ -41,6 +41,16 @@ class ProfileModel {
     required this.settings,
   });
 
+  /// Parses age from JSON (backend may send int or double, e.g. 36 or 36.0).
+  static int? _parseAge(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    final s = value.toString().trim();
+    if (s.isEmpty) return null;
+    return int.tryParse(s);
+  }
+
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
     List<EmergencyContact>? contacts;
     if (json['emergencyContacts'] != null &&
@@ -60,6 +70,11 @@ class ProfileModel {
       ];
     }
 
+    final dateOfBirthRaw = json['dateOfBirth'] ?? json['dob'];
+    final dateOfBirth = dateOfBirthRaw is String
+        ? dateOfBirthRaw
+        : (dateOfBirthRaw != null ? dateOfBirthRaw.toString() : null);
+
     return ProfileModel(
       userId: json['userId'] as String,
       email: json['email'] as String,
@@ -68,8 +83,8 @@ class ProfileModel {
       phone: json['phone'] as String,
       profilePhotoUrl: json['profilePhotoUrl'] as String?,
       createdAt: json['createdAt'] as String?,
-      dateOfBirth: json['dateOfBirth'] as String?,
-      age: json['age'] as int?,
+      dateOfBirth: dateOfBirth,
+      age: _parseAge(json['age']),
       city: json['city'] as String?,
       cityImageUrl: json['cityImageUrl'] as String?,
       address: json['address'] as String?,
@@ -255,9 +270,10 @@ class EmergencyContact {
   });
 
   factory EmergencyContact.fromJson(Map<String, dynamic> json) {
+    final number = json['number'] as String? ?? json['phoneNumber'] as String?;
     return EmergencyContact(
       name: (json['name'] as String?) ?? '',
-      phoneNumber: (json['phoneNumber'] as String?) ?? '',
+      phoneNumber: number ?? '',
       relationship: (json['relationship'] as String?) ?? '',
       isPrimary: (json['isPrimary'] as bool?) ?? false,
     );
@@ -288,6 +304,6 @@ class EmergencyContact {
     if (relationship.trim().isNotEmpty) {
       return relationship;
     }
-    return 'Emergency Contact';
+    return 'Contact';
   }
 }
