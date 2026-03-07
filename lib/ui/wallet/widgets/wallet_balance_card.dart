@@ -39,7 +39,7 @@ class _WalletBalanceCard extends StatelessWidget {
         children: [
           Text(
             'Current Balance',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 18,
               fontWeight: FontWeight.w500,
               height: 28 / 18,
@@ -49,7 +49,7 @@ class _WalletBalanceCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             _formatAmount(balance),
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 40,
               fontWeight: FontWeight.w700,
               height: 60 / 40,
