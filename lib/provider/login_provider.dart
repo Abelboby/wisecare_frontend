@@ -3,13 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'package:wisecare_frontend/navigation/app_navigator.dart';
 import 'package:wisecare_frontend/navigation/routes.dart';
 import 'package:wisecare_frontend/repositories/login_repository.dart';
+import 'package:wisecare_frontend/repositories/profile_repository.dart';
 
 /// Login screen state. Calls repository only.
-/// Routes by [onboardingStep]: COMPLETE → home; otherwise → home until onboarding flow exists.
+/// Routes by [onboardingStep]: COMPLETE → home; otherwise → onboarding at that step.
+/// Uses login response first; if onboardingStep is missing, fetches profile so INVITE_FAMILY etc. are respected.
 class LoginProvider extends ChangeNotifier {
   LoginProvider({LoginRepository? repository}) : _repository = repository ?? LoginRepository();
 
   final LoginRepository _repository;
+  final ProfileRepository _profileRepository = ProfileRepository();
 
   String _email = '';
   String get email => _email;
@@ -52,11 +55,20 @@ class LoginProvider extends ChangeNotifier {
       _errorMessage = null;
       _isLoading = false;
       notifyListeners();
-      final step = model.onboardingStep;
-      if (step == 'COMPLETE') {
+      // Use login response step; if missing, fetch profile so INVITE_FAMILY / MEDICATIONS etc. are not treated as COMPLETE
+      var step = model.onboardingStep?.trim().toUpperCase();
+      if (step == null || step.isEmpty) {
+        try {
+          final profile = await _profileRepository.getProfile();
+          step = profile.onboardingStep.trim().toUpperCase();
+        } catch (_) {
+          step = 'COMPLETE';
+        }
+      }
+      if (step.isEmpty || step == 'COMPLETE') {
         AppNavigator.navigate(AppRoutes.home);
       } else {
-        AppNavigator.navigate(AppRoutes.home);
+        AppNavigator.navigateToOnboarding(step);
       }
     } catch (e) {
       _errorMessage = e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString();
