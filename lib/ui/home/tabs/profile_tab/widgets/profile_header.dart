@@ -4,6 +4,7 @@ class _ProfileHeader extends StatelessWidget {
   const _ProfileHeader({
     required this.name,
     required this.memberSince,
+    this.role,
     this.imageUrl,
     this.onEditPhotoTap,
     this.isUploadingPhoto = false,
@@ -11,6 +12,7 @@ class _ProfileHeader extends StatelessWidget {
 
   final String name;
   final String memberSince;
+  final String? role;
   final String? imageUrl;
   final VoidCallback? onEditPhotoTap;
   final bool isUploadingPhoto;
@@ -54,6 +56,7 @@ class _ProfileHeader extends StatelessWidget {
               _ProfileHeaderAvatarSection(
                 name: name,
                 memberSince: memberSince,
+                role: role,
                 imageUrl: imageUrl,
                 onEditPhotoTap: onEditPhotoTap,
                 isUploadingPhoto: isUploadingPhoto,
@@ -91,6 +94,7 @@ class _ProfileHeaderAvatarSection extends StatelessWidget {
   const _ProfileHeaderAvatarSection({
     required this.name,
     required this.memberSince,
+    this.role,
     required this.imageUrl,
     this.onEditPhotoTap,
     this.isUploadingPhoto = false,
@@ -98,6 +102,7 @@ class _ProfileHeaderAvatarSection extends StatelessWidget {
 
   final String name;
   final String memberSince;
+  final String? role;
   final String? imageUrl;
   final VoidCallback? onEditPhotoTap;
   final bool isUploadingPhoto;
@@ -138,6 +143,20 @@ class _ProfileHeaderAvatarSection extends StatelessWidget {
             ),
           ),
         ),
+        if (role != null && role!.trim().isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Center(
+            child: Text(
+              role!.trim(),
+              style: GoogleFonts.lexend(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                height: 24 / 16,
+                color: Skin.color(Co.primary),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
