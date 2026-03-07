@@ -7,6 +7,7 @@ import 'package:wisecare_frontend/provider/home_provider.dart';
 import 'package:wisecare_frontend/provider/login_provider.dart';
 import 'package:wisecare_frontend/provider/meds_provider.dart';
 import 'package:wisecare_frontend/provider/profile_provider.dart';
+import 'package:wisecare_frontend/provider/signup_provider.dart';
 import 'package:wisecare_frontend/provider/sos_provider.dart';
 import 'package:wisecare_frontend/provider/wallet_provider.dart';
 import 'package:wisecare_frontend/provider/splash_provider.dart';
@@ -36,6 +37,9 @@ class ProviderRegister {
       ),
       ChangeNotifierProvider<LoginProvider>(
         create: (_) => LoginProvider(),
+      ),
+      ChangeNotifierProvider<SignupProvider>(
+        create: (_) => SignupProvider(),
       ),
       ChangeNotifierProvider<ProfileProvider>(
         create: (_) => ProfileProvider(),
