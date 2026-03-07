@@ -79,6 +79,14 @@ class Endpoints {
   /// POST /wallet/topup/request — elderly request top-up (body: amount, message).
   static const String walletTopupRequest = '/wallet/topup/request';
 
+  // ── Onboarding (elderly) ───────────────────────────────────────────────────
+  /// POST /onboarding/elderly/basic — basic info, next step MEDICATIONS.
+  static const String onboardingElderlyBasic = '/onboarding/elderly/basic';
+  /// POST /onboarding/elderly/medications — medications, next step INVITE.
+  static const String onboardingElderlyMedications = '/onboarding/elderly/medications';
+  /// POST /onboarding/elderly/generate-invite — returns inviteCode, step COMPLETE.
+  static const String onboardingElderlyGenerateInvite = '/onboarding/elderly/generate-invite';
+
   // ── Admin ─────────────────────────────────────────────────────────────────
   static const String adminStats = '/admin/stats';
   static const String adminAlerts = '/admin/alerts';
