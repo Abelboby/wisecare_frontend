@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'package:wisecare_frontend/enums/app_enums.dart';
 import 'package:wisecare_frontend/gen/assets.gen.dart';
+import 'package:wisecare_frontend/navigation/app_navigator.dart';
+import 'package:wisecare_frontend/navigation/routes.dart';
 import 'package:wisecare_frontend/provider/login_provider.dart';
 import 'package:wisecare_frontend/utils/theme/colors/app_color.dart';
 import 'package:wisecare_frontend/utils/theme/theme_manager.dart';
@@ -559,18 +561,29 @@ class _LoginSignUpLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // todo: Navigate to sign up screen when implemented.
-      },
-      child: Text(
-        'Sign up',
-        style: TextStyle(
-          color: Skin.color(Co.primary),
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          height: 28 / 18,
-        ),
+      onTap: () => AppNavigator.navigate(AppRoutes.signup),
+      child: RichText(
         textAlign: TextAlign.center,
+        text: TextSpan(
+          style: TextStyle(
+            color: Skin.color(Co.textMuted),
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            height: 28 / 18,
+          ),
+          children: [
+            const TextSpan(text: "Don't have an account? "),
+            TextSpan(
+              text: 'Sign Up',
+              style: TextStyle(
+                color: Skin.color(Co.primary),
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                height: 28 / 18,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
