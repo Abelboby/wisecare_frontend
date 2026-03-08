@@ -28,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
+  bool _isDemoTyping = false;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -35,6 +37,45 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleDemoLogin(BuildContext context) async {
+    if (_isDemoTyping) return;
+    setState(() => _isDemoTyping = true);
+    final provider = context.read<LoginProvider>();
+    final email = _LoginDemoCredentials.email;
+    final password = _LoginDemoCredentials.password;
+    final delay = Duration(milliseconds: _LoginDemoCredentials.typingDelayMs);
+
+    try {
+      _emailController.clear();
+      _passwordController.clear();
+      provider.email = '';
+      provider.password = '';
+
+      for (var i = 0; i <= email.length; i++) {
+        if (!mounted) return;
+        _emailController.text = email.substring(0, i);
+        _emailController.selection = TextSelection.collapsed(offset: i);
+        provider.email = _emailController.text.trim();
+        if (i < email.length) await Future.delayed(delay);
+      }
+
+      for (var i = 0; i <= password.length; i++) {
+        if (!mounted) return;
+        _passwordController.text = password.substring(0, i);
+        _passwordController.selection = TextSelection.collapsed(offset: i);
+        provider.password = _passwordController.text;
+        if (i < password.length) await Future.delayed(delay);
+      }
+
+      if (!mounted) return;
+      provider.signIn();
+    } finally {
+      if (mounted && _isDemoTyping) {
+        setState(() => _isDemoTyping = false);
+      }
+    }
   }
 
   @override
@@ -71,6 +112,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         emailFocusNode: _emailFocusNode,
                         passwordFocusNode: _passwordFocusNode,
                         onSignIn: () => _handleSignIn(context),
+                        onDemoLogin: () => _handleDemoLogin(context),
+                        isDemoTyping: _isDemoTyping,
                       ),
                       GestureDetector(
                         onTap: () => FocusScope.of(context).unfocus(),
@@ -194,6 +237,8 @@ class _LoginCard extends StatelessWidget {
     required this.emailFocusNode,
     required this.passwordFocusNode,
     required this.onSignIn,
+    required this.onDemoLogin,
+    required this.isDemoTyping,
   });
 
   final TextEditingController emailController;
@@ -201,6 +246,8 @@ class _LoginCard extends StatelessWidget {
   final FocusNode emailFocusNode;
   final FocusNode passwordFocusNode;
   final VoidCallback onSignIn;
+  final VoidCallback onDemoLogin;
+  final bool isDemoTyping;
 
   @override
   Widget build(BuildContext context) {
@@ -240,6 +287,11 @@ class _LoginCard extends StatelessWidget {
           ),
           const SizedBox(height: _LoginDimens.cardGap),
           _LoginSignInButton(onSignIn: onSignIn),
+          const SizedBox(height: 12),
+          _LoginDemoButton(
+            onDemoLogin: onDemoLogin,
+            isDemoTyping: isDemoTyping,
+          ),
           const SizedBox(height: _LoginDimens.cardGap),
           const _LoginDivider(),
           const SizedBox(height: _LoginDimens.cardGap),
@@ -551,6 +603,41 @@ class _LoginSignInButton extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _LoginDemoButton extends StatelessWidget {
+  const _LoginDemoButton({
+    required this.onDemoLogin,
+    required this.isDemoTyping,
+  });
+
+  final VoidCallback onDemoLogin;
+  final bool isDemoTyping;
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.read<LoginProvider>();
+    final isDisabled = provider.isLoading || isDemoTyping;
+    return OutlinedButton.icon(
+      onPressed: isDisabled ? null : onDemoLogin,
+      style: OutlinedButton.styleFrom(
+        foregroundColor: Skin.color(Co.primary),
+        side: BorderSide(color: Skin.color(Co.primary)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_LoginDimens.buttonRadius),
+        ),
+      ),
+      icon: const Icon(Icons.flash_on_outlined, size: 18),
+      label: const Text(
+        'Demo login',
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          height: 20 / 14,
+        ),
+      ),
     );
   }
 }
