@@ -58,6 +58,8 @@ class _HomeTabColors {
   static const Color vitalsCardBgGreen = Color(0xFFF0FDF4);
   static const Color vitalsCardBorderGreen = Color(0xFFDCFCE7);
   static const Color vitalsCardIconBgGreen = Color(0xFFDCFCE7);
+  static const Color connectionConnected = Color(0xFF22C55E);
+  static const Color connectionDisconnected = Color(0xFFEF4444);
   static const Color vitalsCardIconGreen = Color(0xFF16A34A);
   static const Color vitalsCardTextGreen = Color(0xFF14532D);
   static const Color bannerGradientStart = Color(0xFF7C3AED);
