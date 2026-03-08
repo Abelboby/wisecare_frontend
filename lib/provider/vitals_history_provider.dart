@@ -23,11 +23,23 @@ class VitalsHistoryProvider extends ChangeNotifier {
   int _selectedHours = 24;
   int get selectedHours => _selectedHours;
 
+  /// Selected range index: 0 = 7 Days, 1 = 30 Days, 2 = 3 Months. Used so 30 Days and 3 Months (both 48h) show the correct chip.
+  int _selectedRangeIndex = 0;
+  int get selectedRangeIndex => _selectedRangeIndex;
+
   int _fetchId = 0;
 
   /// 24 = 7 Days, 48 = 30 Days or 3 Months.
   void setSelectedHours(int hours) {
     if (hours == _selectedHours) return;
+    _selectedHours = hours.clamp(24, 48);
+    notifyListeners();
+  }
+
+  /// Sets both range index and hours so the correct chip is highlighted (30 Days vs 3 Months both use 48h).
+  void setSelectedRange(int rangeIndex, int hours) {
+    if (rangeIndex == _selectedRangeIndex && hours == _selectedHours) return;
+    _selectedRangeIndex = rangeIndex.clamp(0, 2);
     _selectedHours = hours.clamp(24, 48);
     notifyListeners();
   }
