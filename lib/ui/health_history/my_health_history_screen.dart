@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:wisecare_frontend/models/health_history/health_pattern_model.dart';
 import 'package:wisecare_frontend/models/health_history/health_recommendation_model.dart';
 import 'package:wisecare_frontend/models/health_history/health_timeline_item_model.dart';
-import 'package:wisecare_frontend/navigation/routes.dart';
 import 'package:wisecare_frontend/provider/health_history_provider.dart';
 import 'package:wisecare_frontend/provider/profile_provider.dart';
 import 'package:wisecare_frontend/utils/theme/colors/app_color.dart';
@@ -29,6 +28,7 @@ class MyHealthHistoryScreen extends StatefulWidget {
 
 class _MyHealthHistoryScreenState extends State<MyHealthHistoryScreen> {
   bool _loaded = false;
+  int _selectedDays = 30;
 
   @override
   void didChangeDependencies() {
@@ -40,10 +40,27 @@ class _MyHealthHistoryScreenState extends State<MyHealthHistoryScreen> {
     if (userId.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          context.read<HealthHistoryProvider>().loadHealthTimeline(userId: userId);
+          context.read<HealthHistoryProvider>().loadHealthTimeline(
+                userId: userId,
+                days: _selectedDays,
+              );
         }
       });
     }
+  }
+
+  void _onDaysChanged(int days) {
+    if (days == _selectedDays) return;
+    setState(() => _selectedDays = days);
+    final userId = context.read<ProfileProvider>().profile?.userId ?? '';
+    if (userId.isEmpty) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<HealthHistoryProvider>().loadHealthTimeline(
+            userId: userId,
+            days: days,
+          );
+    });
   }
 
   @override
@@ -74,6 +91,8 @@ class _MyHealthHistoryScreenState extends State<MyHealthHistoryScreen> {
             if (healthProvider.isLoading && healthProvider.data == null) {
               return const Center(child: CircularProgressIndicator());
             }
+            final isRefetching =
+                healthProvider.isLoading && healthProvider.data != null;
             if (healthProvider.errorMessage != null && healthProvider.data == null) {
               return Center(
                 child: Padding(
@@ -93,8 +112,17 @@ class _MyHealthHistoryScreenState extends State<MyHealthHistoryScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _MyHealthHistoryHeader(
-                  dateRangeLabel: healthProvider.dateRangeLabel,
+                  dateRangeLabel: 'Last $_selectedDays Days',
+                  selectedDays: _selectedDays,
+                  onDaysChanged: _onDaysChanged,
                 ),
+                if (isRefetching)
+                  LinearProgressIndicator(
+                    backgroundColor: Skin.color(Co.borderSubtle),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Skin.color(Co.primary),
+                    ),
+                  ),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.only(bottom: 111),
