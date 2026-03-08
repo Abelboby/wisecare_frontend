@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import 'package:wisecare_frontend/provider/chat_provider.dart';
+import 'package:wisecare_frontend/provider/health_history_provider.dart';
 import 'package:wisecare_frontend/provider/home_provider.dart';
 import 'package:wisecare_frontend/provider/login_provider.dart';
 import 'package:wisecare_frontend/provider/meds_provider.dart';
@@ -11,6 +12,8 @@ import 'package:wisecare_frontend/provider/signup_provider.dart';
 import 'package:wisecare_frontend/provider/sos_provider.dart';
 import 'package:wisecare_frontend/provider/wallet_provider.dart';
 import 'package:wisecare_frontend/provider/splash_provider.dart';
+import 'package:wisecare_frontend/provider/vitals_provider.dart';
+import 'package:wisecare_frontend/provider/vitals_history_provider.dart';
 
 /// Centralized provider registration.
 /// Theme is NOT managed via Provider — see Skin (theme/theme_manager.dart).
@@ -46,6 +49,15 @@ class ProviderRegister {
       ),
       ChangeNotifierProvider<WalletProvider>(
         create: (_) => WalletProvider(),
+      ),
+      ChangeNotifierProvider<HealthHistoryProvider>(
+        create: (_) => HealthHistoryProvider(),
+      ),
+      ChangeNotifierProvider<VitalsProvider>(
+        create: (_) => VitalsProvider(),
+      ),
+      ChangeNotifierProvider<VitalsHistoryProvider>(
+        create: (_) => VitalsHistoryProvider(),
       ),
     ];
   }
