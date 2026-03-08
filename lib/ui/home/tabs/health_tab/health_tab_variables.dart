@@ -69,6 +69,8 @@ class _HealthTabDimens {
   static const double contentPadding = 16.0;
   static const double contentBottom = 46.0;
   static const double sectionGap = 24.0;
+  static const double sectionTitleSize = 18.0;
+  static const double sectionTitleGap = 12.0;
   static const double cardRadius = 24.0;
 
   static const double headerHeight = 120.0;
