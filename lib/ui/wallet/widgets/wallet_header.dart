@@ -11,11 +11,10 @@ class _WalletHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topInset = MediaQuery.of(context).padding.top;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.only(
-        top: topInset + _WalletDimens.headerPaddingTop,
+        top: 56,
         left: _WalletDimens.headerPaddingHorizontal,
         right: _WalletDimens.headerPaddingHorizontal,
         bottom: _WalletDimens.headerPaddingBottom,
@@ -47,34 +46,36 @@ class _WalletHeader extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () => context.pop(),
-                child: const SizedBox(
+                child: Container(
                   width: 44,
                   height: 44,
-                  child: Icon(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.18),
+                  ),
+                  child: const Icon(
                     Icons.arrow_back_ios_new,
                     color: Colors.white,
                     size: 20,
                   ),
                 ),
               ),
-              Expanded(
-                child: Text(
-                  'My Wallet',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.lexend(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    height: 32 / 24,
-                    color: Colors.white,
-                  ),
+              const SizedBox(width: 16),
+              Text(
+                'My Wallet',
+                textAlign: TextAlign.left,
+                style: GoogleFonts.lexend(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  height: 32 / 24,
+                  color: Colors.white,
                 ),
               ),
-              const SizedBox(width: 44),
             ],
           ),
           const SizedBox(height: _WalletDimens.headerGap),
           Text(
-            'Namaste, ${userName.trim().isNotEmpty ? userName : 'User'} ji',
+            'Namaste, ${userName.trim().isNotEmpty ? userName : 'User'}',
             style: GoogleFonts.lexend(
               fontSize: 18,
               fontWeight: FontWeight.w400,
