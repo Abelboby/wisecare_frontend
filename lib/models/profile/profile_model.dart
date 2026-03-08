@@ -83,9 +83,7 @@ class ProfileModel {
     }
 
     final dateOfBirthRaw = json['dateOfBirth'] ?? json['dob'];
-    final dateOfBirth = dateOfBirthRaw is String
-        ? dateOfBirthRaw
-        : (dateOfBirthRaw != null ? dateOfBirthRaw.toString() : null);
+    final dateOfBirth = dateOfBirthRaw is String ? dateOfBirthRaw : (dateOfBirthRaw?.toString());
 
     return ProfileModel(
       userId: json['userId'] as String,
