@@ -4,7 +4,6 @@ class _MyHealthHistoryDimens {
   _MyHealthHistoryDimens._();
 
   static const double screenPaddingHorizontal = 24.0;
-  static const double headerHeight = 212.0;
   static const double headerButtonSize = 48.0;
   static const double headerTitleSize = 30.0;
   static const double headerSubtitleSize = 18.0;
