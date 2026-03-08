@@ -7,6 +7,7 @@ class _MyHealthHistoryDetectedPatterns extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (patterns.isEmpty) return const SizedBox.shrink();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,25 +30,26 @@ class _MyHealthHistoryDetectedPatterns extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             horizontal: _MyHealthHistoryDimens.screenPaddingHorizontal,
           ),
-          child: patterns.isEmpty
-              ? const SizedBox.shrink()
-              : Row(
-                  children: [
-                    for (int i = 0; i < patterns.length; i++) ...[
-                      if (i > 0) const SizedBox(width: 16),
-                      Expanded(
-                        child: _PatternCard(
-                          badge: (patterns[i].severity ?? '').toUpperCase() == 'HIGH' ? 'ALERT' : 'WARNING',
-                          badgeColor: (patterns[i].severity ?? '').toUpperCase() == 'HIGH'
-                              ? Skin.color(Co.alert)
-                              : Skin.color(Co.warning),
-                          title: patterns[i].symptom,
-                          detail: patterns[i].frequency,
-                        ),
-                      ),
-                    ],
-                  ],
+          child: Row(
+            children: [
+              for (int i = 0; i < patterns.length; i++) ...[
+                if (i > 0) const SizedBox(width: 16),
+                Expanded(
+                  child: _PatternCard(
+                    badge: (patterns[i].severity ?? '').toUpperCase() == 'HIGH'
+                        ? 'ALERT'
+                        : 'WARNING',
+                    badgeColor:
+                        (patterns[i].severity ?? '').toUpperCase() == 'HIGH'
+                            ? Skin.color(Co.alert)
+                            : Skin.color(Co.warning),
+                    title: patterns[i].symptom,
+                    detail: patterns[i].frequency,
+                  ),
                 ),
+              ],
+            ],
+          ),
         ),
       ],
     );
