@@ -58,7 +58,7 @@ class _OnboardingAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.lexend(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     height: 22 / 18,
@@ -76,7 +76,7 @@ class _OnboardingAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Center(
                     child: Text(
                       'Skip',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.lexend(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: OnboardingColors.primary,
@@ -158,7 +158,7 @@ class _OnboardingBottomBar extends StatelessWidget {
                     children: [
                       Text(
                         'Save & Next',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.lexend(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                           height: 28 / 20,
