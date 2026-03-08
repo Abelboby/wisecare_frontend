@@ -53,6 +53,13 @@ class Co {
     grayscale: Color(0xFFFFFFFF),
   );
 
+  /// Muted text on dark header (e.g. "Last 7 Days").
+  static const AppColor onPrimaryMuted = AppColor(
+    light: Color(0xB3FFFFFF),
+    dark: Color(0xB3FFFFFF),
+    grayscale: Color(0xB3FFFFFF),
+  );
+
   static const AppColor onSecondary = AppColor(
     light: Color(0xFFFFFFFF),
     dark: Color(0xFF332D41),
@@ -148,5 +155,68 @@ class Co {
     light: Color(0xFF354670),
     dark: Color(0xFF354670),
     grayscale: Color(0xFF4A5568),
+  );
+
+  /// Screen body background (e.g. health history).
+  static const AppColor contentBackground = AppColor(
+    light: Color(0xFFF8F9FF),
+    dark: Color(0xFF1C1B1F),
+    grayscale: Color(0xFFFAFAFA),
+  );
+
+  /// Subtle border (cards, badges).
+  static const AppColor borderSubtle = AppColor(
+    light: Color(0xFFF1F5F9),
+    dark: Color(0xFF49454F),
+    grayscale: Color(0xFFE0E0E0),
+  );
+
+  /// Secondary label text.
+  static const AppColor textSecondary = AppColor(
+    light: Color(0xFF64748B),
+    dark: Color(0xFF94A3B8),
+    grayscale: Color(0xFF757575),
+  );
+
+  /// Tertiary / source text.
+  static const AppColor textTertiary = AppColor(
+    light: Color(0xFF94A3B8),
+    dark: Color(0xFF64748B),
+    grayscale: Color(0xFF9E9E9E),
+  );
+
+  /// Dark header button overlay (e.g. back/calendar on navy).
+  static const AppColor headerButtonOverlay = AppColor(
+    light: Color(0x1AFFFFFF),
+    dark: Color(0x1AFFFFFF),
+    grayscale: Color(0x1AFFFFFF),
+  );
+
+  /// Primary color tint (e.g. icon background).
+  static const AppColor primaryTint = AppColor(
+    light: Color(0x1AFF6933),
+    dark: Color(0x33FF6933),
+    grayscale: Color(0x1A424242),
+  );
+
+  /// Alert / critical (e.g. pattern ALERT).
+  static const AppColor alert = AppColor(
+    light: Color(0xFFEF4444),
+    dark: Color(0xFFF87171),
+    grayscale: Color(0xFF757575),
+  );
+
+  /// Warning (e.g. pattern WARNING).
+  static const AppColor warning = AppColor(
+    light: Color(0xFFFB923C),
+    dark: Color(0xFFFDBA74),
+    grayscale: Color(0xFF9E9E9E),
+  );
+
+  /// Timeline dot / divider (secondary).
+  static const AppColor timelineMuted = AppColor(
+    light: Color(0xFFE2E8F0),
+    dark: Color(0xFF49454F),
+    grayscale: Color(0xFFE0E0E0),
   );
 }
