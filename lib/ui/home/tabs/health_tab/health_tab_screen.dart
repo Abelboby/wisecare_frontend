@@ -98,8 +98,28 @@ class _HealthTabScreenState extends State<HealthTabScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            Text(
+                              'Time range',
+                              style: GoogleFonts.lexend(
+                                fontSize: _HealthTabDimens.sectionTitleSize,
+                                fontWeight: FontWeight.w700,
+                                height: 28 / 18,
+                                color: _HealthTabColors.valuePrimary,
+                              ),
+                            ),
+                            const SizedBox(height: _HealthTabDimens.sectionTitleGap),
                             const _HealthTimeRangeFilter(),
                             const SizedBox(height: _HealthTabDimens.sectionGap),
+                            Text(
+                              'Summary',
+                              style: GoogleFonts.lexend(
+                                fontSize: _HealthTabDimens.sectionTitleSize,
+                                fontWeight: FontWeight.w700,
+                                height: 28 / 18,
+                                color: _HealthTabColors.valuePrimary,
+                              ),
+                            ),
+                            const SizedBox(height: _HealthTabDimens.sectionTitleGap),
                             _buildStatsGrid(historyProvider),
                             const SizedBox(height: _HealthTabDimens.sectionGap),
                             const _HeartRateTrendsChart(),
