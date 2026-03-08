@@ -60,14 +60,26 @@ class ProfileModel {
           .map((e) => EmergencyContact.fromJson(e is Map<String, dynamic> ? e : <String, dynamic>{}))
           .toList();
     } else if (json['emergencyContact'] != null && json['emergencyContact'].toString().isNotEmpty) {
-      contacts = [
-        EmergencyContact(
-          name: json['emergencyContactName'] as String? ?? '',
-          phoneNumber: json['emergencyContact'] as String,
-          relationship: json['emergencyContactRelationship'] as String? ?? '',
-          isPrimary: true,
-        ),
-      ];
+      final ec = json['emergencyContact'];
+      if (ec is Map<String, dynamic>) {
+        contacts = [
+          EmergencyContact(
+            name: (ec['name'] as String?) ?? (json['emergencyContactName'] as String?) ?? '',
+            phoneNumber: (ec['number'] as String?) ?? '',
+            relationship: (ec['relationship'] as String?) ?? (json['emergencyContactRelationship'] as String?) ?? '',
+            isPrimary: true,
+          ),
+        ];
+      } else if (ec is String) {
+        contacts = [
+          EmergencyContact(
+            name: json['emergencyContactName'] as String? ?? '',
+            phoneNumber: ec,
+            relationship: json['emergencyContactRelationship'] as String? ?? '',
+            isPrimary: true,
+          ),
+        ];
+      }
     }
 
     final dateOfBirthRaw = json['dateOfBirth'] ?? json['dob'];
@@ -270,11 +282,23 @@ class EmergencyContact {
   });
 
   factory EmergencyContact.fromJson(Map<String, dynamic> json) {
-    final number = json['number'] as String? ?? json['phoneNumber'] as String?;
+    final phoneNumberRaw = json['phoneNumber'];
+    final String number;
+    String contactName = (json['name'] as String?)?.trim() ?? '';
+    String contactRelationship = (json['relationship'] as String?)?.trim() ?? '';
+    if (phoneNumberRaw is Map<String, dynamic>) {
+      number = (phoneNumberRaw['number'] as String?) ?? '';
+      if (contactName.isEmpty) contactName = (phoneNumberRaw['name'] as String?)?.trim() ?? '';
+      if (contactRelationship.isEmpty) contactRelationship = (phoneNumberRaw['relationship'] as String?)?.trim() ?? '';
+    } else if (phoneNumberRaw is String) {
+      number = phoneNumberRaw;
+    } else {
+      number = (json['number'] as String?) ?? '';
+    }
     return EmergencyContact(
-      name: (json['name'] as String?) ?? '',
-      phoneNumber: number ?? '',
-      relationship: (json['relationship'] as String?) ?? '',
+      name: contactName,
+      phoneNumber: number,
+      relationship: contactRelationship,
       isPrimary: (json['isPrimary'] as bool?) ?? false,
     );
   }
