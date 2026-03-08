@@ -23,6 +23,7 @@ class _MyHealthHistoryRecommendedActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (recommendations.isEmpty) return const SizedBox.shrink();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
