@@ -17,8 +17,8 @@ class _HealthTimeRangeFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<ProfileProvider, VitalsHistoryProvider>(
       builder: (context, profile, historyProvider, _) {
-        final selectedHours = historyProvider.selectedHours;
-        final selectedRange = selectedHours <= 24 ? _HealthTimeRange.sevenDays : _HealthTimeRange.thirtyDays;
+        final selectedRange =
+            _HealthTimeRange.values[historyProvider.selectedRangeIndex.clamp(0, _HealthTimeRange.values.length - 1)];
         final timeRange = historyProvider.history?.timeRange;
         final dateRangeText = _formatDateRange(timeRange?.start, timeRange?.end);
 
@@ -143,7 +143,7 @@ class _HealthTimeRangeFilter extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (selectedRange == range) return;
-        historyProvider.setSelectedHours(hours);
+        historyProvider.setSelectedRange(range.index, hours);
         if (userId.isNotEmpty) {
           historyProvider.fetchHistory(userId, hours: hours);
         }
