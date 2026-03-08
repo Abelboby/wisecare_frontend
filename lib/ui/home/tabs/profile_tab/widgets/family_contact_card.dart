@@ -213,7 +213,16 @@ class _FamilyContactInfo extends StatelessWidget {
           ),
         ),
         Text(
-          '${contact.relationshipLabel} • ${contact.phoneNumber}',
+          contact.phoneNumber,
+          style: GoogleFonts.lexend(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            height: 24 / 16,
+            color: Skin.color(Co.textMuted),
+          ),
+        ),
+        Text(
+          contact.relationshipLabel,
           style: GoogleFonts.lexend(
             fontSize: 16,
             fontWeight: FontWeight.w500,
