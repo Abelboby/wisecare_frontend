@@ -12,7 +12,18 @@ class HealthTimelineRepository {
   Future<HealthTimelineResponseModel> getHealthTimeline({
     required String userId,
     int? days,
+    String? startDate,
+    String? endDate,
+    String? eventType,
+    int? limit,
   }) async {
-    return _healthTimelineService.getHealthTimeline(userId: userId, days: days);
+    return _healthTimelineService.getHealthTimeline(
+      userId: userId,
+      days: days,
+      startDate: startDate,
+      endDate: endDate,
+      eventType: eventType,
+      limit: limit,
+    );
   }
 }
