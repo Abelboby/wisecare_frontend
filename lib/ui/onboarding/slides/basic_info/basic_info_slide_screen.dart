@@ -92,7 +92,7 @@ class BasicInfoSlideScreenState extends State<BasicInfoSlideScreen> {
           const SizedBox(height: OnboardingDimens.greetingGap),
           Text(
             "Let's start by getting to know you better for your WiseCare profile.",
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 16,
               fontWeight: FontWeight.w400,
               height: 26 / 16,
@@ -183,7 +183,7 @@ class BasicInfoSlideScreenState extends State<BasicInfoSlideScreen> {
           const SizedBox(height: OnboardingDimens.labelInputGap),
           Text(
             'Select all that apply',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 14,
               fontWeight: FontWeight.w400,
               height: 20 / 14,
