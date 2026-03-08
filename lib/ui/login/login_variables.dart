@@ -13,3 +13,14 @@ class _LoginDimens {
   static const double cardPadding = 24;
   static const double cardGap = 24;
 }
+
+/// Demo credentials for quick login (dev/demo only). Remove in production.
+class _LoginDemoCredentials {
+  _LoginDemoCredentials._();
+
+  static const String email = 'raghav@example.com';
+  static const String password = 'test1234';
+
+  /// Delay per character for demo typewriter animation (milliseconds).
+  static const int typingDelayMs = 35;
+}
