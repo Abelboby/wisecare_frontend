@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:wisecare_frontend/navigation/app_route_model.dart';
 import 'package:wisecare_frontend/ui/chat/chat_with_arya_screen.dart';
 import 'package:wisecare_frontend/ui/emergency_sos/emergency_sos_screen.dart';
+import 'package:wisecare_frontend/ui/health_history/health_timeline_screen.dart';
+import 'package:wisecare_frontend/ui/health_history/my_health_history_screen.dart';
 import 'package:wisecare_frontend/ui/home/home_screen.dart';
 import 'package:wisecare_frontend/ui/login/login_screen.dart';
 import 'package:wisecare_frontend/ui/signup/signup_screen.dart';
@@ -73,8 +75,33 @@ abstract class AppRoutes {
     },
   );
 
-  static List<AppRoute> get all =>
-      [splash, home, login, signup, chatWithArya, emergencySos, wallet, walletTransactions, onboarding];
+  static final AppRoute myHealthHistory = AppRoute(
+    path: '/my-health-history',
+    name: 'MyHealthHistory',
+    builder: (BuildContext context, GoRouterState state) =>
+        const MyHealthHistoryScreen(),
+  );
+
+  static final AppRoute healthTimeline = AppRoute(
+    path: '/health-timeline',
+    name: 'HealthTimeline',
+    builder: (BuildContext context, GoRouterState state) =>
+        const HealthTimelineScreen(),
+  );
+
+  static List<AppRoute> get all => [
+        splash,
+        home,
+        login,
+        signup,
+        chatWithArya,
+        emergencySos,
+        wallet,
+        walletTransactions,
+        onboarding,
+        myHealthHistory,
+        healthTimeline,
+      ];
 
   static List<AppRoute> get testableRoutes => [home, login, signup];
 }
