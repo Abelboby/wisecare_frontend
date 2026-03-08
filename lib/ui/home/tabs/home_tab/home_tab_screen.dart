@@ -7,6 +7,7 @@ import 'package:wisecare_frontend/enums/app_enums.dart';
 import 'package:wisecare_frontend/navigation/routes.dart';
 import 'package:wisecare_frontend/provider/home_provider.dart';
 import 'package:wisecare_frontend/provider/profile_provider.dart';
+import 'package:wisecare_frontend/provider/vitals_provider.dart';
 
 part 'home_tab_functions.dart';
 part 'home_tab_variables.dart';
@@ -31,7 +32,8 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
     if (!_profileRequested) {
       _profileRequested = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) context.read<ProfileProvider>().loadProfile();
+        if (!mounted) return;
+        context.read<ProfileProvider>().loadProfile();
       });
     }
   }
@@ -43,6 +45,15 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
         final profile = profileProvider.profile;
         final profilePhotoUrl = profile?.profilePhotoUrl;
         final userName = profile?.name;
+
+        // Wire vitals WebSocket once userId is known.
+        if (profile != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              context.read<VitalsProvider>().init(profile.userId);
+            }
+          });
+        }
         return Container(
           color: _HomeTabColors.background,
           child: CustomScrollView(
