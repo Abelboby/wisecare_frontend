@@ -11,64 +11,130 @@ class _FloatingVitalsCard extends StatelessWidget {
         final heartRate = vitals?.heartRateLabel ?? '--';
         final bp = vitals?.bpLabel ?? '--';
         final risk = vitals?.riskLabel ?? '--';
+        final isConnected = vitalsProvider.isConnected;
 
         return Material(
           color: Colors.transparent,
           child: InkWell(
             onTap: () => context.read<HomeProvider>().switchTab(AppTab.health),
             borderRadius: BorderRadius.circular(_HomeTabDimens.floatingCardRadius),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              decoration: BoxDecoration(
-                color: _HomeTabColors.vitalsCardBg,
-                borderRadius: BorderRadius.circular(_HomeTabDimens.floatingCardRadius),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x1A000000),
-                    blurRadius: 25,
-                    offset: Offset(0, 20),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  decoration: BoxDecoration(
+                    color: _HomeTabColors.vitalsCardBg,
+                    borderRadius: BorderRadius.circular(_HomeTabDimens.floatingCardRadius),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x1A000000),
+                        blurRadius: 25,
+                        offset: Offset(0, 20),
+                      ),
+                      BoxShadow(
+                        color: Color(0x14000000),
+                        blurRadius: 10,
+                        offset: Offset(0, 8),
+                      ),
+                    ],
                   ),
-                  BoxShadow(
-                    color: Color(0x14000000),
-                    blurRadius: 10,
-                    offset: Offset(0, 8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _VitalsSection(
+                          icon: Icons.favorite,
+                          iconColor: _HomeTabColors.heartIcon,
+                          value: heartRate,
+                          label: 'BPM',
+                        ),
+                      ),
+                      Container(width: 1, height: 60, color: _HomeTabColors.vitalsDivider),
+                      Expanded(
+                        child: _VitalsSection(
+                          icon: Icons.water_drop_outlined,
+                          iconColor: _HomeTabColors.bpIcon,
+                          value: bp,
+                          label: 'BP',
+                        ),
+                      ),
+                      Container(width: 1, height: 60, color: _HomeTabColors.vitalsDivider),
+                      Expanded(
+                        child: _VitalsSection(
+                          icon: Icons.shield_outlined,
+                          iconColor: _HomeTabColors.riskIcon,
+                          value: risk,
+                          label: 'RISK',
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: _VitalsSection(
-                      icon: Icons.favorite,
-                      iconColor: _HomeTabColors.heartIcon,
-                      value: heartRate,
-                      label: 'BPM',
-                    ),
-                  ),
-                  Container(width: 1, height: 60, color: _HomeTabColors.vitalsDivider),
-                  Expanded(
-                    child: _VitalsSection(
-                      icon: Icons.water_drop_outlined,
-                      iconColor: _HomeTabColors.bpIcon,
-                      value: bp,
-                      label: 'BP',
-                    ),
-                  ),
-                  Container(width: 1, height: 60, color: _HomeTabColors.vitalsDivider),
-                  Expanded(
-                    child: _VitalsSection(
-                      icon: Icons.shield_outlined,
-                      iconColor: _HomeTabColors.riskIcon,
-                      value: risk,
-                      label: 'RISK',
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                Positioned(
+                  top: 12,
+                  right: 12,
+                  child: _PulsingConnectionIndicator(connected: isConnected),
+                ),
+              ],
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class _PulsingConnectionIndicator extends StatefulWidget {
+  const _PulsingConnectionIndicator({required this.connected});
+
+  final bool connected;
+
+  @override
+  State<_PulsingConnectionIndicator> createState() => _PulsingConnectionIndicatorState();
+}
+
+class _PulsingConnectionIndicatorState extends State<_PulsingConnectionIndicator> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat(reverse: true);
+    _animation = Tween<double>(begin: 0.5, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final color = widget.connected ? _HomeTabColors.connectionConnected : _HomeTabColors.connectionDisconnected;
+    return FadeTransition(
+      opacity: _animation,
+      child: Container(
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.5),
+              blurRadius: 4,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
