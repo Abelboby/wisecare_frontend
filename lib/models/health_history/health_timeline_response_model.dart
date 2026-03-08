@@ -35,6 +35,9 @@ class HealthTimelineResponseModel {
     final dateRange = json['dateRange'] as Map<String, dynamic>?;
     final summary = json['summary'] as Map<String, dynamic>?;
 
+    final from = _dateRangeValue(dateRange, 'from', 'startDate');
+    final to = _dateRangeValue(dateRange, 'to', 'endDate');
+
     final timelineRaw = json['timeline'];
     List<HealthTimelineItemModel> timelineList = [];
     if (timelineRaw is List) {
@@ -63,18 +66,28 @@ class HealthTimelineResponseModel {
           .toList();
     }
 
+    int? totalEvents = summary != null && summary['totalHealthEvents'] is num
+        ? (summary['totalHealthEvents'] as num).toInt()
+        : null;
+    if (totalEvents == null && json['count'] is num) {
+      totalEvents = (json['count'] as num).toInt();
+    }
+
+    int? patternsCount = summary != null && summary['patternsDetected'] is num
+        ? (summary['patternsDetected'] as num).toInt()
+        : null;
+    if (patternsCount == null && patternsList != null && patternsList.isNotEmpty) {
+      patternsCount = patternsList.length;
+    }
+
     return HealthTimelineResponseModel(
       userId: json['userId'] as String? ?? '',
       userName: json['userName'] as String? ?? '',
       age: json['age'] is num ? (json['age'] as num).toInt() : null,
-      dateRangeFrom: dateRange?['from'] as String? ?? '',
-      dateRangeTo: dateRange?['to'] as String? ?? '',
-      totalHealthEvents: summary != null && summary['totalHealthEvents'] is num
-          ? (summary['totalHealthEvents'] as num).toInt()
-          : null,
-      patternsDetected: summary != null && summary['patternsDetected'] is num
-          ? (summary['patternsDetected'] as num).toInt()
-          : null,
+      dateRangeFrom: from,
+      dateRangeTo: to,
+      totalHealthEvents: totalEvents,
+      patternsDetected: patternsCount,
       highConfidenceEvents:
           summary != null && summary['highConfidenceEvents'] is num
               ? (summary['highConfidenceEvents'] as num).toInt()
@@ -83,5 +96,16 @@ class HealthTimelineResponseModel {
       patterns: patternsList?.isEmpty == true ? null : patternsList,
       recommendations: recsList?.isEmpty == true ? null : recsList,
     );
+  }
+
+  static String _dateRangeValue(
+    Map<String, dynamic>? dateRange,
+    String key1,
+    String key2,
+  ) {
+    if (dateRange == null) return '';
+    final v = dateRange[key1] ?? dateRange[key2];
+    if (v == null) return '';
+    return v is String ? v : v.toString();
   }
 }
