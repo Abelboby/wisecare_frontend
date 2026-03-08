@@ -1,149 +1,163 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:wisecare_frontend/enums/app_enums.dart';
-import 'package:wisecare_frontend/provider/home_provider.dart';
+import 'package:intl/intl.dart';
+import 'package:wisecare_frontend/models/vitals/vitals_history_response_model.dart';
+import 'package:wisecare_frontend/navigation/routes.dart';
 import 'package:wisecare_frontend/provider/profile_provider.dart';
+import 'package:wisecare_frontend/provider/vitals_history_provider.dart';
 
 part 'health_tab_functions.dart';
 part 'health_tab_variables.dart';
 part 'widgets/health_header.dart';
-part 'widgets/low_risk_banner.dart';
+part 'widgets/health_time_range_filter.dart';
 part 'widgets/vital_card.dart';
 part 'widgets/heart_rate_trends_chart.dart';
-part 'widgets/reading_item.dart';
+part 'widgets/health_blood_pressure_chart.dart';
+part 'widgets/health_risk_distribution.dart';
+part 'widgets/health_recent_readings_table.dart';
 
-class HealthTabScreen extends StatelessWidget {
+class HealthTabScreen extends StatefulWidget {
   const HealthTabScreen({super.key});
 
   @override
+  State<HealthTabScreen> createState() => _HealthTabScreenState();
+}
+
+class _HealthTabScreenState extends State<HealthTabScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _fetchHistoryIfNeeded());
+  }
+
+  void _fetchHistoryIfNeeded() {
+    final profile = context.read<ProfileProvider>().profile;
+    final userId = profile?.userId;
+    if (userId == null || userId.isEmpty) return;
+    final historyProvider = context.read<VitalsHistoryProvider>();
+    if (!historyProvider.isLoading && historyProvider.history == null) {
+      historyProvider.fetchHistory(userId);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<ProfileProvider>(
-      builder: (context, profileProvider, _) {
-        final userName = profileProvider.profile?.name;
-        final displayName = _getFirstNameForGreeting(userName);
-        return Container(
-          color: _HealthTabColors.background,
-          child: Column(
-            children: [
-              const _HealthHeader(),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(
-                    _HealthTabDimens.contentPaddingHorizontal,
-                    _HealthTabDimens.contentPaddingTop,
-                    _HealthTabDimens.contentPaddingHorizontal,
-                    _HealthTabDimens.contentPaddingBottom,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _LowRiskBanner(userName: displayName),
-                  const SizedBox(height: _HealthTabDimens.sectionGap),
-                  _buildCurrentReadingsSection(),
-                  const SizedBox(height: _HealthTabDimens.sectionGap),
-                  const _HeartRateTrendsChart(),
-                  const SizedBox(height: _HealthTabDimens.sectionGap),
-                  _buildLatestReadingsSection(),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+    return Container(
+      color: _HealthTabColors.background,
+      child: Column(
+        children: [
+          const _HealthHeader(),
+          Expanded(
+            child: Consumer2<ProfileProvider, VitalsHistoryProvider>(
+              builder: (context, profile, historyProvider, _) {
+                if (historyProvider.isLoading && historyProvider.history == null) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final isRefreshing = historyProvider.isLoading && historyProvider.history != null;
+                if (historyProvider.errorMessage != null && historyProvider.history == null) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            historyProvider.errorMessage!,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.lexend(
+                              fontSize: 14,
+                              color: _HealthTabColors.trendRed,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          TextButton(
+                            onPressed: () => historyProvider.fetchHistory(
+                              profile.profile?.userId ?? '',
+                            ),
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (isRefreshing) const LinearProgressIndicator(),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(
+                          _HealthTabDimens.contentPadding,
+                          _HealthTabDimens.contentPadding,
+                          _HealthTabDimens.contentPadding,
+                          _HealthTabDimens.contentBottom,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const _HealthTimeRangeFilter(),
+                            const SizedBox(height: _HealthTabDimens.sectionGap),
+                            _buildStatsGrid(historyProvider),
+                            const SizedBox(height: _HealthTabDimens.sectionGap),
+                            const _HeartRateTrendsChart(),
+                            const SizedBox(height: _HealthTabDimens.sectionGap),
+                            const _BloodPressureTrendCard(),
+                            const SizedBox(height: _HealthTabDimens.sectionGap),
+                            const _RiskDistributionCard(),
+                            const SizedBox(height: _HealthTabDimens.sectionGap),
+                            const _RecentReadingsTable(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
-  Widget _buildCurrentReadingsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: Text(
-            'Current Readings',
-            style: GoogleFonts.lexend(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              height: 28 / 20,
-              color: _HealthTabColors.sectionTitle,
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        IntrinsicHeight(
-          child: Row(
-            children: [
-              Expanded(
-                child: _VitalCard(
-                  icon: Icons.favorite_rounded,
-                  label: 'Heart Rate',
-                  value: '72',
-                  valueUnit: 'BPM',
-                ),
-              ),
-              const SizedBox(width: _HealthTabDimens.cardGap),
-              Expanded(
-                child: _VitalCard(
-                  icon: Icons.water_drop_outlined,
-                  label: 'Blood Pressure',
-                  value: '120/80',
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  Widget _buildStatsGrid(VitalsHistoryProvider historyProvider) {
+    final stats = historyProvider.history?.statistics;
+    final heartRateAvg = stats?.heartRate.avg.round();
+    final bpSystolic = stats?.bloodPressure.systolic.avg.round();
+    final bpDiastolic = stats?.bloodPressure.diastolic.avg.round();
+    final dist = stats?.riskDistribution;
+    final activeRiskCount = dist != null ? dist.high + dist.critical : 0;
 
-  Widget _buildLatestReadingsSection() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: Text(
-            'Latest Readings',
-            style: GoogleFonts.lexend(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              height: 28 / 18,
-              color: _HealthTabColors.sectionTitle,
-            ),
-          ),
+        _VitalCard(
+          label: 'Avg Heart Rate',
+          icon: Icons.favorite_rounded,
+          iconColor: _HealthTabColors.iconHeart,
+          value: heartRateAvg != null ? '$heartRateAvg' : '—',
+          unit: 'BPM',
         ),
         const SizedBox(height: 16),
-        const _ReadingItem(
-          iconData: Icons.water_drop_outlined,
-          iconColor: _HealthTabColors.oxygenIcon,
-          iconBgColor: _HealthTabColors.oxygenIconBg,
-          title: 'Oxygen Level',
-          subtitle: 'Today, 9:00 AM',
-          value: '98%',
-          statusLabel: 'Good',
+        _VitalCard(
+          label: 'Avg BP',
+          icon: Icons.water_drop_outlined,
+          iconColor: _HealthTabColors.iconBp,
+          value: (bpSystolic != null && bpDiastolic != null) ? '$bpSystolic/$bpDiastolic' : '—',
+          unit: 'mmHg',
         ),
-        const SizedBox(height: _HealthTabDimens.readingItemGap),
-        const _ReadingItem(
-          iconData: Icons.thermostat_outlined,
-          iconColor: _HealthTabColors.tempIcon,
-          iconBgColor: _HealthTabColors.tempIconBg,
-          title: 'Temperature',
-          subtitle: 'Yesterday, 8:00 PM',
-          value: '98.4°F',
-          statusLabel: 'Good',
-        ),
-        const SizedBox(height: _HealthTabDimens.readingItemGap),
-        const _ReadingItem(
-          iconData: Icons.monitor_weight_outlined,
-          iconColor: _HealthTabColors.weightIcon,
-          iconBgColor: _HealthTabColors.weightIconBg,
-          title: 'Weight',
-          subtitle: 'Yesterday, 8:00 AM',
-          value: '74 kg',
-          statusLabel: 'Stable',
+        const SizedBox(height: 16),
+        _VitalCard(
+          label: 'Active Risk Alerts',
+          icon: Icons.shield_outlined,
+          iconColor: _HealthTabColors.iconShield,
+          value: '$activeRiskCount',
+          unit: activeRiskCount > 0 ? 'High Priority' : 'Alerts',
+          unitColor: activeRiskCount > 0 ? _HealthTabColors.trendRed : null,
+          trendText: activeRiskCount > 0 ? 'See resolution steps' : null,
+          trendColor: _HealthTabColors.trendMuted,
         ),
       ],
     );
