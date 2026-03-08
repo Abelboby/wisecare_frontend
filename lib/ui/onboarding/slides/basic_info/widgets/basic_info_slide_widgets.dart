@@ -9,7 +9,7 @@ class _BasicInfoLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: GoogleFonts.poppins(
+      style: GoogleFonts.lexend(
         fontSize: 16,
         fontWeight: FontWeight.w600,
         height: 24 / 16,
@@ -54,12 +54,10 @@ class _BasicInfoDatePickerField extends StatelessWidget {
             Expanded(
               child: Text(
                 displayText ?? hint,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.lexend(
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
-                  color: displayText != null
-                      ? OnboardingColors.textPrimary
-                      : OnboardingColors.textHint,
+                  color: displayText != null ? OnboardingColors.textPrimary : OnboardingColors.textHint,
                 ),
               ),
             ),
@@ -98,14 +96,14 @@ class _BasicInfoInput extends StatelessWidget {
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.text,
-        style: GoogleFonts.poppins(
+        style: GoogleFonts.lexend(
           fontSize: 18,
           fontWeight: FontWeight.w400,
           color: OnboardingColors.textPrimary,
         ),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: GoogleFonts.poppins(fontSize: 18, color: OnboardingColors.textHint),
+          hintStyle: GoogleFonts.lexend(fontSize: 18, color: OnboardingColors.textHint),
           border: InputBorder.none,
           isDense: true,
           contentPadding: EdgeInsets.zero,
@@ -142,7 +140,7 @@ class _BasicInfoInputWithPrefix extends StatelessWidget {
         children: [
           Text(
             prefix,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 18,
               fontWeight: FontWeight.w400,
               color: OnboardingColors.textHint,
@@ -153,14 +151,14 @@ class _BasicInfoInputWithPrefix extends StatelessWidget {
             child: TextField(
               controller: controller,
               keyboardType: keyboardType,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.lexend(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
                 color: OnboardingColors.textPrimary,
               ),
               decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: GoogleFonts.poppins(fontSize: 18, color: OnboardingColors.textHint),
+                hintStyle: GoogleFonts.lexend(fontSize: 18, color: OnboardingColors.textHint),
                 border: InputBorder.none,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
@@ -197,14 +195,14 @@ class _BasicInfoTextArea extends StatelessWidget {
         maxLines: null,
         expands: true,
         textAlignVertical: TextAlignVertical.top,
-        style: GoogleFonts.poppins(
+        style: GoogleFonts.lexend(
           fontSize: 18,
           fontWeight: FontWeight.w400,
           color: OnboardingColors.textPrimary,
         ),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: GoogleFonts.poppins(fontSize: 18, color: OnboardingColors.textHint),
+          hintStyle: GoogleFonts.lexend(fontSize: 18, color: OnboardingColors.textHint),
           border: InputBorder.none,
           isDense: true,
           contentPadding: EdgeInsets.zero,
@@ -245,7 +243,7 @@ class _BasicInfoDropdown extends StatelessWidget {
           isExpanded: true,
           hint: Text(
             hint,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.lexend(
               fontSize: 18,
               fontWeight: FontWeight.w400,
               color: OnboardingColors.textPrimary,
@@ -300,7 +298,7 @@ class BasicInfoGenderChip extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               label,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.lexend(
                 fontSize: 16,
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 color: selected ? OnboardingColors.primary : OnboardingColors.textSecondary,
@@ -343,7 +341,7 @@ class BasicInfoConditionChip extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.lexend(
             fontSize: 14,
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
             color: selected ? OnboardingColors.primary : OnboardingColors.textPrimary,
