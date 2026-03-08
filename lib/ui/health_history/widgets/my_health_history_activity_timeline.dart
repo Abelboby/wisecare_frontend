@@ -18,7 +18,7 @@ class _MyHealthHistoryActivityTimeline extends StatelessWidget {
         columnChildren.add(const SizedBox(height: 32));
       }
       lastDate = item.date;
-      final isHighConfidence = item.confidence.toUpperCase() == 'HIGH';
+      final isHighConfidence = isHighSeverity(item.confidence);
       columnChildren.add(
         _TimelineEntry(
           time: formatTimelineDisplayTime(item.date, item.time),
