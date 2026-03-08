@@ -5,108 +5,77 @@ class _HealthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topInset = MediaQuery.of(context).padding.top;
     return Container(
       width: double.infinity,
+      height: _HealthTabDimens.headerHeight,
       padding: EdgeInsets.only(
-        top: topInset + 16,
-        left: _HealthTabDimens.headerPaddingHorizontal,
-        right: _HealthTabDimens.headerPaddingHorizontal,
-        bottom: _HealthTabDimens.headerPaddingBottom,
+        top: MediaQuery.of(context).padding.top + 16,
+        left: _HealthTabDimens.headerPadding,
+        right: _HealthTabDimens.headerPadding,
+        bottom: _HealthTabDimens.headerPadding,
       ),
       decoration: const BoxDecoration(
-        color: _HealthTabColors.headerNavy,
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 15,
-            offset: Offset(0, 10),
-          ),
-          BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 6,
-            offset: Offset(0, 4),
-          ),
-        ],
+        color: _HealthTabColors.headerBg,
+        border: Border(
+          bottom: BorderSide(color: _HealthTabColors.headerBorder, width: 1),
+        ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _HealthBackButton(),
+          const SizedBox(width: 12),
           Text(
-            'My Health Vitals',
+            'Health Vitals',
             style: GoogleFonts.lexend(
               fontSize: 20,
               fontWeight: FontWeight.w700,
-              height: 28 / 20,
-              letterSpacing: 0.5,
+              height: 25 / 20,
+              letterSpacing: -0.5,
               color: _HealthTabColors.headerTitle,
             ),
           ),
-          _HealthNotificationButton(),
+          const Spacer(),
+          _NotificationButton(),
         ],
       ),
     );
   }
 }
 
-class _HealthBackButton extends StatelessWidget {
+class _NotificationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.read<HomeProvider>().switchTab(AppTab.home),
-      child: Container(
-        width: _HealthTabDimens.headerButtonSize,
-        height: _HealthTabDimens.headerButtonSize,
-        decoration: const BoxDecoration(
-          color: _HealthTabColors.headerButtonBg,
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(
-          Icons.chevron_left_rounded,
-          color: _HealthTabColors.headerIcon,
-          size: 28,
-        ),
-      ),
-    );
-  }
-}
-
-class _HealthNotificationButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: _HealthTabDimens.headerButtonSize,
-      height: _HealthTabDimens.headerButtonSize,
-      child: Stack(
-        children: [
-          Center(
-            child: Icon(
-              Icons.notifications_outlined,
-              color: _HealthTabColors.headerIcon,
-              size: 24,
-            ),
-          ),
-          Positioned(
-            right: 4,
-            top: 4,
-            child: Container(
-              width: 10,
-              height: 10,
-              decoration: BoxDecoration(
-                color: _HealthTabColors.notificationBadge,
-                shape: BoxShape.circle,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x33000000),
-                    blurRadius: 2,
-                    offset: Offset(0, 1),
-                  ),
-                ],
+      onTap: () {
+        context.push(AppRoutes.myHealthHistory.path);
+      },
+      child: SizedBox(
+        width: 48,
+        height: 48,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Center(
+              child: Icon(
+                Icons.history_rounded,
+                color: _HealthTabColors.headerIconMuted,
+                size: 32,
               ),
             ),
-          ),
-        ],
+            Positioned(
+              right: 6,
+              top: 6,
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  color: _HealthTabColors.notificationBadge,
+                  border: Border.all(color: Colors.white, width: 2),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
