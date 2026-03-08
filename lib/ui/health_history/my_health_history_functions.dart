@@ -49,16 +49,32 @@ String formatSourceDisplay(String source) {
       return 'Source: From Vitals App';
     case 'CONVERSATION':
       return 'Source: Voice Log';
+    case 'MEDICATION':
+      return 'Source: Medication';
+    case 'ALERT':
+      return 'Source: Alert';
+    case 'SERVICE_REQUEST':
+      return 'Source: Service Request';
+    case 'MEMORY':
+      return 'Source: Memory';
     default:
       return 'Source: $source';
   }
 }
 
-/// Confidence label for timeline badge.
+/// Whether severity/confidence is high or critical (for timeline dot color).
+bool isHighSeverity(String confidence) {
+  final u = confidence.toUpperCase();
+  return u == 'HIGH' || u == 'CRITICAL';
+}
+
+/// Confidence label for timeline badge (also maps API severity).
 String formatConfidenceLabel(String confidence) {
   switch (confidence.toUpperCase()) {
     case 'HIGH':
-      return 'HIGH CONFIDENCE';
+      return 'HIGH';
+    case 'CRITICAL':
+      return 'CRITICAL';
     case 'LOW':
       return 'LOW';
     default:
