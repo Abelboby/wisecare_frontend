@@ -25,6 +25,9 @@ class Endpoints {
   /// GET /vitals/latest/{userId}
   static String vitalsLatest(String userId) => '/vitals/latest/$userId';
 
+  /// GET /vitals/history?userId=&hours=&limit= — history API (no WebSocket).
+  static const String vitalsHistory = '/vitals/history';
+
   /// GET /risk/{userId}
   static String risk(String userId) => '/risk/$userId';
 
@@ -86,6 +89,10 @@ class Endpoints {
   static const String onboardingElderlyMedications = '/onboarding/elderly/medications';
   /// POST /onboarding/elderly/generate-invite — returns inviteCode, step COMPLETE.
   static const String onboardingElderlyGenerateInvite = '/onboarding/elderly/generate-invite';
+
+  // ── Memory / Health timeline ──────────────────────────────────────────────
+  /// GET /memory/health-timeline/{userId} — health timeline, patterns, recommendations.
+  static String healthTimeline(String userId) => '/memory/health-timeline/$userId';
 
   // ── Admin ─────────────────────────────────────────────────────────────────
   static const String adminStats = '/admin/stats';
