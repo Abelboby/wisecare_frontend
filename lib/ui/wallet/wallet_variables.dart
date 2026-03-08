@@ -3,7 +3,6 @@ part of 'wallet_screen.dart';
 class _WalletDimens {
   _WalletDimens._();
 
-  static const double headerPaddingTop = 48;
   static const double headerPaddingHorizontal = 24;
   static const double headerPaddingBottom = 24;
   static const double headerBottomRadius = 32;
